@@ -1,0 +1,11 @@
+{
+    "_id": "661340a1f4f3899031623e2d",
+    "national_ID": "30203131500559",
+    "email": "mohamed@gmail.com",
+    "phone": "01065623680",
+    "full_name": "mohamed osama mohamed",
+    "role": "student",
+    "password": "$2b$10$sHeJHoYemyRL0sBjrF96EOoDdHveaaBwCcVmPaungpv3j08AR9UI2",
+    "isActive": true,
+    "emailVerified": false
+}

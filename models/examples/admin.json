@@ -1,0 +1,13 @@
+{
+    "_id": "5df4g5ds4hg6s4df5gh4sd",
+    "user_id": "_id",
+    "subjects": [
+        // get all subjects
+    ],
+    "teachers": [
+        // get all teachers
+    ],
+    "students": [
+        // get all students
+    ]
+}
