@@ -6,7 +6,7 @@ const adminController = require('../../controllers/admin.controller')
 
 // fetching data
 adminRouter.get('/subjects', adminController.getSubjects)
-adminRouter.get('/get-student', adminController.getStudents)
+adminRouter.get('/get-students', adminController.getStudents)
 adminRouter.get('/get-teachers', adminController.getTeachers)
 
 

@@ -18,7 +18,9 @@ const verifyRole = require('../helpers/verify_role')
 router.use('/auth', authRouter)
 
 // route matches api/v1/admin/
-router.use('/admin', verifyToken, verifyRole('admin'), adminRouter)
+// router.use('/admin', verifyToken, verifyRole('admin'), adminRouter)
+router.use('/admin', adminRouter)
+
 
 // // route matches api/v1/student/
 // router.use('/student', verifyToken, verifyRole('student'), studentRouter)

@@ -1,4 +1,4 @@
-const { User, Subject, Teacher } = require('../models')
+const { User, Subject, Teacher, Student } = require('../models')
 const createError = require('http-errors')
 
 
@@ -6,7 +6,7 @@ const createError = require('http-errors')
 const getSubjects = async (req, res, next) => {
     try {
         const subjects = await Subject.find({})
-        res.send(subjects.toJSON())
+        res.send(subjects)
     } catch (error) {
         next(createError.BadRequest())
     }
@@ -14,7 +14,7 @@ const getSubjects = async (req, res, next) => {
 const getTeachers = async (req, res, next) => {
     try {
         const teachers = await Teacher.find({})
-        res.send(teachers.toJSON())
+        res.send(teachers)
     } catch (error) {
         next(createError.BadRequest())
     }
@@ -22,7 +22,7 @@ const getTeachers = async (req, res, next) => {
 const getStudents = async (req, res, next) => {
     try {
         const students = await Student.find({})
-        res.send(students.toJSON())
+        res.send(students)
     } catch (error) {
         next(createError.BadRequest())
     }
