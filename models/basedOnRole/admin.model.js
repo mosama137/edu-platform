@@ -3,9 +3,7 @@ const Schema = mongoose.Schema
 
 const adminModel = new Schema(
     {
-        user_id: String,
-
-
+        _id: { type: Schema.Types.ObjectId, ref: 'User' },
     },
     { timestamps: true }
 )

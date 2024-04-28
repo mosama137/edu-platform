@@ -1,4 +1,4 @@
-const { User } = require('../models')
+const { User, Student, Teacher, Admin } = require('../models')
 const { signAccessToken } = require('../helpers/access_token')
 const createError = require('http-errors')
 
@@ -7,6 +7,13 @@ const register = async function (req, res, next) {
     try {
 
         const user = await User.create(req.body)
+        if (user.role === "student") {
+            await Student.create({ _id: user.id })
+        } else if (user.role === "teacher") {
+            await Teacher.create({ _id: user.id })
+        } else if (user.role === "admin") {
+            await Admin.create({ _id: user.id })
+        }
         const accessToken = await signAccessToken(user)
         //send token
         return res.send(

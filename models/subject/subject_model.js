@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 
 // Define Exam Schema
 const subjectSchema = new Schema({
-    name: {
+    subject_name: {
         type: String,
         required: true,
         unique: true,

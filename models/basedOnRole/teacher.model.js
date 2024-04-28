@@ -1,13 +1,15 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+const createError = require('http-errors')
 
 const teacherModel = new Schema(
     {
-        user_id: { type: Schema.Types.ObjectId, ref: 'User' },
+        _id: { type: Schema.Types.ObjectId, ref: 'User' },
         subjects: [
             {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'Subject'
+                ref: 'Subject',
+                unique: true
             }
         ],
     }

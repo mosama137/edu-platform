@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 
 const studentModel = new Schema(
     {
-        user_id: { type: Schema.Types.ObjectId, ref: 'User' },
+        _id: { type: Schema.Types.ObjectId, ref: 'User' },
         level: String,
 
     },
