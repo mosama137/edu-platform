@@ -5,13 +5,14 @@ const createError = require('http-errors')
 
 const register = async function (req, res, next) {
     try {
-
-        const user = await User.create(req.body)
-        if (user.role === "student") {
-            await Student.create({ _id: user.id })
-        } else if (user.role === "teacher") {
+        const { full_name, national_id, role, phone, email, password } = req.body
+        const user = await User.create({ full_name, national_id, role, phone, email, password })
+        if (role === "student") {
+            const { level } = req.body
+            await Student.create({ _id: user.id, level })
+        } else if (role === "teacher") {
             await Teacher.create({ _id: user.id })
-        } else if (user.role === "admin") {
+        } else if (role === "admin") {
             await Admin.create({ _id: user.id })
         }
         const accessToken = await signAccessToken(user)
