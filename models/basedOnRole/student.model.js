@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 const studentModel = new Schema(
     {
         _id: { type: Schema.Types.ObjectId, ref: 'User' },
-        level: String,
+        level: Number,
 
     },
     { timestamps: true }
