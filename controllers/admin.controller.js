@@ -24,7 +24,6 @@ const getStudents = async (req, res, next) => {
         next(createError.BadRequest())
     }
 }
-
 const getTeachers = async (req, res, next) => {
     try {
         const teachers = await Teacher.find({}).populate({
@@ -45,7 +44,6 @@ const getTeachers = async (req, res, next) => {
         next(createError.BadRequest())
     }
 }
-
 const getSubjects = async (req, res, next) => {
     try {
         const subjects = await Subject.find({}).populate({
@@ -72,6 +70,23 @@ const getSubjects = async (req, res, next) => {
     }
 }
 
+//  control accounts activation
+const activeAccount = async (req, res, next) => {
+    try {
+        const { user_id, active_value } = req.body
+        const user = await User.findByIdAndUpdate(user_id, {
+            $set: {
+                isActive: active_value
+            }
+        },
+            { new: true }
+        )
+        res.send(user)
+
+    } catch (error) {
+        next(createError.BadRequest())
+    }
+}
 
 
 // Subjects control
@@ -93,7 +108,6 @@ const addSubject = async (req, res, next) => {
         next(createError.BadRequest())
     }
 }
-
 // update subject's teacher
 const updateSubjectTeacher = async (req, res, next) => {
     try {
@@ -102,7 +116,9 @@ const updateSubjectTeacher = async (req, res, next) => {
             $set: {
                 teacher_id: teacher_id
             }
-        })
+        },
+            { new: true }
+        )
         await Teacher.findByIdAndUpdate(teacher_id, {
             //we use add to set to compare and didn't duplicate 
             $addToSet: {
@@ -116,6 +132,25 @@ const updateSubjectTeacher = async (req, res, next) => {
     }
 }
 
+
+// deleting
+const delUser = async (req, res, next) => {
+    try {
+        const { user_id } = req.body
+        const delUser = await User.findByIdAndDelete(user_id)
+        if (!delUser) {
+            next(createError.NotFound('user not Found'))
+        }
+        if (delUser.role === 'student') {
+            await Student.findOneAndDelete({ _id: user_id });
+        } else if (delUser.role === 'teacher') {
+            await Teacher.findOneAndDelete({ _id: user_id });
+        }
+        res.send(delUser)
+    } catch (error) {
+        next(createError.BadRequest())
+    }
+}
 const delSubject = async (req, res, next) => {
     try {
         const subject_id = req.body
@@ -135,22 +170,7 @@ const delSubject = async (req, res, next) => {
 }
 
 
-//  control accounts activation
-const activeAccount = async (req, res, next) => {
-    try {
-        const { user_id, activeValue } = req.body
-        const user = await User.findByIdAndUpdate(user_id, {
-            $set: {
-                isActive: activeValue
-            }
-        }
-        )
-        res.send(user.toJSON())
 
-    } catch (error) {
-        next(createError.BadRequest())
-    }
-}
 
 
 
@@ -162,5 +182,6 @@ module.exports = {
     activeAccount,
     getSubjects,
     getStudents,
-    getTeachers
+    getTeachers,
+    delUser,
 }
