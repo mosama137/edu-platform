@@ -1,0 +1,18 @@
+{
+    "subject_id": "564sdf6g4ed4fgd65f4gh",
+    "title": "Quiz 1",
+    "duration": 15,
+    // question schema
+    "questions": [
+        {
+            "questionText": "What is 2 + 2?",
+            "options": [
+                "3",
+                "4",
+                "5",
+                "6"
+            ],
+            "correctOptionIndex": 1
+        }
+    ]
+}
