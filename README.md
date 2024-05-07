@@ -66,7 +66,7 @@
         "teacher_id": null
     },
     {
-        "_id": "662d47d293a19d508e722560",
+        "subject_id": "662d47d293a19d508e722560",
         "subject_name": "Statistics",
         "level": 1,
         "teacher_name": null,
