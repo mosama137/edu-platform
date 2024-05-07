@@ -38,18 +38,53 @@
 
 
 #### *auth response*:
+1- if Student : 
   ```JSON
     {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MTUxMTA2NDQsImV4cCI6MTcxNTExMDk0NH0.3t4YuNxqyaQnpT5EmNpeRVBr3k-cqmMei95W-VZ1Ksk",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MTUxMTY3MDAsImV4cCI6MTcxNTExNzAwMH0._3GcawZJjr22e58yx7gVHUBI97U_Ou7nqOD8_VYuDlU",
   "user": {
-    "full_name": "mohamed osama mohamed",
-    "national_id": "30203131500",
+    "user_id": "663a8bb04b15ad15d26b39ea",
+    "full_name": "amr osama",
+    "national_id": "30403131500559",
     "isActive": true,
-    "email": "mohamed00@gmail.com",
-    "role": "admin"
-    }
+    "email": "a.osama@gmail.com",
+    "role": "student",
+    "level": 2,
+    "subjects": [
+      {
+        "_id": "662d47f693a19d508e722564",
+        "subject_name": "Introduction to Machine Learning"
+      },
+      {
+        "_id": "662d480193a19d508e722566",
+        "subject_name": "Introduction to Vision and Robotics"
+      }
+    ]
   }
+}
   ```
+2- if teacher:
+```Json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MTUxMTg0ODksImV4cCI6MTcxNTExODc4OX0.Vmob5PpSWBaybKtrAq6m2wA52KES-qjy1RiiFcsoV7Q",
+  "user": {
+    "user_id": "663a8c328a51b7b89affa762",
+    "full_name": "osama mohamed",
+    "national_id": "30103131500559",
+    "isActive": true,
+    "email": "osama.teacher@gmail.com",
+    "role": "teacher",
+    "subjects": [
+      {
+        "_id": "662d47d293a19d508e722560",
+        "subject_name": "Statistics",
+        "level": 1
+      }
+    ]
+  }
+}
+
+```
 
 ## *you can navigate to admin, teacher or student pages based on role provided in response*
 ##
