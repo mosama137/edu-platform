@@ -5,7 +5,6 @@ const adminModel = new Schema(
     {
         _id: { type: Schema.Types.ObjectId, ref: 'User' },
     },
-    { timestamps: true }
 )
 
 
