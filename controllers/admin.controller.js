@@ -1,4 +1,4 @@
-const { User, Subject, Teacher, Student } = require('../models')
+const { User, Subject, Teacher, Student, Payment, PaymentHistory } = require('../models')
 const createError = require('http-errors')
 
 
@@ -71,6 +71,37 @@ const getTeachers = async (req, res, next) => {
     } catch (error) {
         next(createError.BadRequest())
     }
+}
+
+// matches /api/v1/admin/payment-info
+const getPaymentInfo = async (req, res, next) => {
+    const payment = await Payment.find({})
+    res.send(payment)
+}
+// matches /api/v1/admin/add-payment
+const addPaymentInfo = async (req, res, next) => {
+    try {
+        const { level, amount, vodafoneCash, instaPay } = req.body
+        const addedPayment = await Payment.create({
+            level: level,
+            amount: amount,
+            methods: {
+                vodafoneCash: vodafoneCash,
+                instaPay: instaPay
+            }
+        })
+    } catch (error) {
+        next(createError.BadRequest('failed to add payment info'))
+    }
+}
+// matches /api/v1/admin/del-payment
+const delPayment = async (req, res, next) => {
+    const level = req.body.level
+    const deletedPayment = await Payment.findOneAndDelete({ level: level })
+    if (!deletedPayment) {
+        next(createError.NotFound('Level not exist!'))
+    }
+    res.send(deletedPayment)
 }
 
 
@@ -185,12 +216,18 @@ const delSubject = async (req, res, next) => {
 
 
 module.exports = {
-    addSubject,
-    updateSubjectTeacher,
-    delSubject,
-    activeAccount,
     getSubjects,
     getStudents,
     getTeachers,
+    getPaymentInfo,
+
+    addSubject,
+    updateSubjectTeacher,
+    activeAccount,
+    addPaymentInfo,
+
     delUser,
+    delSubject,
+    delPayment,
+
 }
