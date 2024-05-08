@@ -194,5 +194,43 @@ or
 }
 ```
 ##
+### Payment Methods: /api/v1/admin/
+1- /payment-info : *GET*
+```Json
+[
+{
+  "level": 1,
+  "amount": 700,
+  "methods":{
+  "vodafoneCash":"01029872506",
+  "instaPay": "mosama137"
+  }
+},
+{
+  "level": 2,
+  "amount": 1000,
+  "methods":{
+  "vodafoneCash":"01029872506",
+  "instaPay": "mosama137"
+  }
+}
+]
+```
+2- /add-payment: *POST*
+```JSOM
+{
+  "level": 3,
+  "amount": 700,
+  "vodafoneCash":"01029872506",
+  "instaPay": "mosama137"
+}
+```
+3- /del-payment: *DELETE*
+```Json
+{
+  "level": 1
+}
+```
+
 ## *Second role teacher* 
 
