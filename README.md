@@ -293,9 +293,11 @@ _GET_ /api/v1/admin/payments
 ]
 ```
 
-2- /add-payment: _POST_
+#### 2. Add payment:
 
-```JSOM
+_POST_ /api/v1/admin/payment
+
+```JSON
 {
   "level": 3,
   "amount": 700,
@@ -304,7 +306,9 @@ _GET_ /api/v1/admin/payments
 }
 ```
 
-3- /del-payment: _DELETE_
+#### 3. Delete payment:
+
+_DELETE_ /api/v1/admin/payment
 
 ```Json
 {
