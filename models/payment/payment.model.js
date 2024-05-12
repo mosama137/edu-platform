@@ -12,16 +12,15 @@ const paymentSchema = new Schema({
         type: Number,
         required: true
     },
-    methods: {
-        vodafoneCash: {
-            type: String,
+    vodafoneCash: {
+        type: String,
 
-        },
-        instaPay: {
-            type: String,
+    },
+    instaPay: {
+        type: String,
 
-        }
     }
+
 });
 
 // Create Payment Model
