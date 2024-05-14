@@ -1,4 +1,4 @@
 node_modules
-rest.http
+.http
 .env
 .vscode
