@@ -14,10 +14,10 @@ const verifyRole = require('../helpers/verify_role')
 
 
 
-// route matches api/v1/auth/
+// route matches /api/v1/auth/
 router.use('/auth', authRouter)
 
-// route matches api/v1/admin/
+// route matches /api/v1/admin/
 // router.use('/admin', verifyToken, verifyRole('admin'), adminRouter)
 router.use('/admin', adminRouter)
 
