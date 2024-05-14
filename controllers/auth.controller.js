@@ -56,14 +56,13 @@ const register = async function (req, res, next) {
 
 }
 
+
 const login = async function (req, res, next) {
     try {
         const { username, password } = req.body
         // check getting username and password
         if (!username || !password) throw createError.BadRequest('username or password required')
-        // search by national id
-        const national_id = username
-        const user = await User.findOne({ national_id })
+        const user = await User.findOne({ national_id:username })
         // if user exist -> check password -> return token
         if (user) {
             const isPasswordValid = await user.verifyPassword(password);

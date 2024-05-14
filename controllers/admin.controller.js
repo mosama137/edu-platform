@@ -1,10 +1,16 @@
 const { User, Subject, Teacher, Student, Payment, PaymentHistory } = require('../models')
 const createError = require('http-errors')
 
+/* status Code for:
+    - created -> 201
+    - updated -> 200
+    - deleted -> 204
+    - NtFound -> 404
+*/
 
-// getting data
 
 
+// -------------------------Members------------------------------------
 // matches GET /api/v1/admin/students
 const getStudents = async (req, res, next) => {
     try {
@@ -22,9 +28,9 @@ const getStudents = async (req, res, next) => {
             isActive: student._id.isActive,
             level: student.level
         }));
-        res.send(formattedStudents)
+        return res.send(formattedStudents)
     } catch (error) {
-        next(createError.BadRequest())
+        return next(createError.BadRequest())
     }
 }
 // matches GET /api/v1/admin/teachers
@@ -43,15 +49,15 @@ const getTeachers = async (req, res, next) => {
             email: teacher._id.email,
             isActive: teacher._id.isActive,
         }));
-        res.send(formattedTeachers)
+        return res.send(formattedTeachers)
     } catch (error) {
-        next(createError.BadRequest())
+        return next(createError.BadRequest())
     }
 }
 // ------------------------------------------------------------
 
-// -----------------accounts activation------------------------
-// matches /api/v1/admin/account-activate
+// -----------------accounts-activation-for-members-------------
+// matches /api/v1/admin/activation
 const activeAccount = async (req, res, next) => {
     try {
         const { user_id, active_value } = req.body
@@ -62,10 +68,10 @@ const activeAccount = async (req, res, next) => {
         },
             { new: true }
         )
-        res.status(201).send({ msg: "done!" })
+        return res.status(201).send({ status: 201, msg: "done!" })
 
     } catch (error) {
-        next(createError.BadRequest())
+        return next(createError.BadRequest('User not found'))
     }
 }
 // ------------------------------------------------------------
@@ -73,12 +79,12 @@ const activeAccount = async (req, res, next) => {
 
 // -----------------Payments-----------------------------------
 // matches GET /api/v1/admin/payment
-const getPaymentInfo = async (req, res, next) => {
+const getPayment = async (req, res, next) => {
     const payment = await Payment.find({})
-    res.send(payment)
+    return res.send(payment)
 }
 // matches POST /api/v1/admin/payment
-const addPaymentInfo = async (req, res, next) => {
+const addOrEditPayment = async (req, res, next) => {
     // here we check first if exist then edit else add it 
     try {
         const { level, amount, vodafoneCash, instaPay } = req.body
@@ -98,7 +104,7 @@ const addPaymentInfo = async (req, res, next) => {
 
         return res.send(updatedPayment)
     } catch (error) {
-        next(createError.BadRequest('failed to add payment info'))
+        return next(createError.BadRequest('failed to add payment info'))
     }
 }
 // matches DEL /api/v1/admin/payment
@@ -106,9 +112,9 @@ const delPayment = async (req, res, next) => {
     const { level } = req.body
     const deletedPayment = await Payment.findOneAndDelete({ level: level })
     if (!deletedPayment) {
-        next(createError.NotFound('Level not exist!'))
+        return next(createError.NotFound('Level not exist!'))
     }
-    res.send(deletedPayment)
+    return res.send(deletedPayment)
 }
 // ------------------------------------------------------------
 
@@ -143,65 +149,58 @@ const getSubjects = async (req, res, next) => {
     }
 }
 // matches POST /api/v1/admin/subject
-const addSubject = async (req, res, next) => {
+const addOrUpdateSubject = async (req, res, next) => {
     try {
-        const { teacher_id } = req.body //get teacher user_id
-        const subject = await Subject.create(req.body)
+        const { teacher_id, subject_name, level } = req.body
+        const subject = await Subject.findOneAndUpdate(
+            { subject_name: subject_name },
+            {
+                $set: {
+                    subject_name: subject_name,
+                    level: level,
+                    // will add teacher if have value
+                    ...(teacher_id && { teacher_id }),
+
+                }
+            },
+            {
+                new: true,
+                upsert: true,
+            }
+        )
         if (teacher_id) {
-            await Teacher.findOneAndUpdate({ teacher_id }, {
+            await Teacher.findByIdAndUpdate(teacher_id, {
                 $addToSet: {
                     subjects: subject.id
                 }
             })
         }
 
-        res.send(subject)
+        return res.send(subject)
 
     } catch (error) {
         console.log(error)
-        next(createError.BadRequest())
+        return next(createError.BadRequest())
     }
 }
-// matches POST /api/v1/admin/subject-teacher
-const updateSubjectTeacher = async (req, res, next) => {
-    try {
-        const { teacher_id, subject_id } = req.body
-        const teacher = await Teacher.findByIdAndUpdate(teacher_id, {
-            //we use add to set to compare and didn't duplicate 
-            $addToSet: {
-                subjects: subject_id
-            }
-        }, { new: true })
-        if (teacher) {
-            await Subject.findByIdAndUpdate(subject_id, {
-                $set: {
-                    teacher_id: teacher_id
-                }
-            }
-            )
-        }
-        return res.send(teacher)
-    } catch (error) {
-        console.log(error);
-        next(createError.BadRequest())
-    }
-}
+
 // matches DELETE /api/v1/admin/subject
 const delSubject = async (req, res, next) => {
     try {
         const subject_id = req.body
         const deletedSubject = await Subject.findByIdAndDelete({ subject_id })
         if (!deletedSubject) {
-            next(createError.BadRequest('subject not found'))
+            return next(createError.BadRequest('subject not found'))
         }
         // Remove the subject ID from all teacher documents
         await Teacher.updateMany(
             { subjects: subject_id }, // Find teachers with the subject ID
             { $pull: { subjects: subject_id } } // Remove the subject ID from the array
         );
+        return res.status(204).send()
 
     } catch (error) {
-        next(createError.BadRequest())
+        return next(createError.BadRequest())
     }
 }
 // ------------------------------------------------------------
@@ -220,9 +219,9 @@ const delUser = async (req, res, next) => {
         } else if (delUser.role === 'teacher') {
             await Teacher.findOneAndDelete({ _id: user_id });
         }
-        res.send(delUser)
+        return res.send(delUser)
     } catch (error) {
-        next(createError.BadRequest())
+        return next(createError.BadRequest())
     }
 }
 // ------------------------------------------------------------
@@ -234,18 +233,17 @@ const delUser = async (req, res, next) => {
 
 
 module.exports = {
-    getSubjects,
     getStudents,
     getTeachers,
-    getPaymentInfo,
-
-    addSubject,
-    updateSubjectTeacher,
     activeAccount,
-    addPaymentInfo,
 
     delUser,
-    delSubject,
-    delPayment,
 
+    getSubjects,
+    addOrUpdateSubject,
+    delSubject,
+
+    getPayment,
+    addOrEditPayment,
+    delPayment
 }
