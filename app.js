@@ -46,7 +46,7 @@ class MyApp {
 
         // not found routes
         this.app.use((req, res, next) => {
-            next(createError.NotFound('This Page not Found'))
+            next(createError.NotFound('This Path not Found'))
         })
         // handle errors
         this.app.use((err, req, res, next) => {

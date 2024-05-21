@@ -2,39 +2,37 @@ const { User, Student, Teacher, Admin, Subject } = require('../models')
 const { signAccessToken } = require('../helpers/access_token')
 const createError = require('http-errors')
 
-const register = async function (req, res, next) {
+const register = async (req, res, next) => {
     try {
-        const { full_name, national_id, role, phone, email, password } = req.body
-        const user = await User.create({ full_name, national_id, role, phone, email, password })
-        if (role === "student") {
-            const { level } = req.body
-            await Student.create({ _id: user.id, level })
-        } else if (role === "teacher") {
-            await Teacher.create({ _id: user.id })
-        } else if (role === "admin") {
-            await Admin.create({ _id: user.id })
-        }
-        const accessToken = await signAccessToken(user)
+        const { full_name, national_id, role, phone, email, password, level } = req.body;
+        const user = await User.create({ full_name, national_id, role, phone, email, password });
 
+        // user Json 
         const userFormattedData = {
             user_id: user._id,
             full_name: user.full_name,
             national_id: user.national_id,
             isActive: user.isActive,
             email: user.email,
-            role: user.role
+            role: user.role,
+        };
+
+        // Create specific role document based on the user's role
+        switch (role) {
+            case "student":
+                await Student.create({ _id: user._id, level });
+                break;
+            case "teacher":
+                await Teacher.create({ _id: user._id });
+                break;
+            case "admin":
+                await Admin.create({ _id: user._id });
+                break;
+            default:
+                throw createError.NotFound('Invalid role provided');
         }
 
-        // If user is a student, fetch student level and subjects
-        if (user.role === "student") {
-            const student = await Student.findById(user._id);
-            if (student) {
-                userFormattedData.level = student.level;
-                // Fetch subjects based on student level
-                const subjects = await Subject.find({ level: student.level }).select("subject_name");
-                userFormattedData.subjects = subjects;
-            }
-        }
+        const accessToken = await signAccessToken(user);
 
         //send token and user Data
         return res.send(
@@ -61,54 +59,57 @@ const login = async function (req, res, next) {
     try {
         const { username, password } = req.body
         // check getting username and password
-        if (!username || !password) throw createError.BadRequest('username or password required')
-        const user = await User.findOne({ national_id:username })
+        if (!username || !password) {
+            throw createError.BadRequest('username or password required')
+        }
+        const user = await User.findOne({ national_id: username })
         // if user exist -> check password -> return token
-        if (user) {
-            const isPasswordValid = await user.verifyPassword(password);
+        if (!user) {
+            throw createError.Conflict('Wrong username or password');
+        }
+        const isPasswordValid = await user.verifyPassword(password);
+        if (!isPasswordValid) {
+            throw createError.Conflict('Wrong username or password');
+        }
+        // get token
+        const accessToken = await signAccessToken(user.id)
 
-            if (!isPasswordValid) throw createError.Conflict("Wrong username or password")
-            // get token
-            const accessToken = await signAccessToken(user.id)
-
-            const userFormattedData = {
-                user_id: user._id,
-                full_name: user.full_name,
-                national_id: user.national_id,
-                isActive: user.isActive,
-                email: user.email,
-                role: user.role
-            }
-
-            // If user is a student, fetch student level and subjects
-            if (user.role === "student") {
-                const student = await Student.findById(user._id);
-                if (student) {
-                    userFormattedData.level = student.level;
-                    // Fetch subjects based on student level
-                    const subjects = await Subject.find({ level: student.level }).select("subject_name");
-                    userFormattedData.subjects = subjects;
-                }
-            }
-            // If user is a teacher, fetch assigned subjects
-            if (user.role === 'teacher') {
-                // Assuming teachers have an array of subject IDs they teach
-                const teacher = await Teacher.findById(user._id);
-                if (teacher) {
-                    // Fetch subjects based on assigned subject IDs
-                    const subjects = await Subject.find({ _id: { $in: teacher.subjects } }).select('subject_name _id level ');
-                    userFormattedData.subjects = subjects.map(subject => subject);
-                }
-            }
-
-            //send token
-            return res.send(
-                { token: accessToken, user: userFormattedData }
-            )
+        const userFormattedData = {
+            user_id: user._id,
+            full_name: user.full_name,
+            national_id: user.national_id,
+            isActive: user.isActive,
+            email: user.email,
+            role: user.role
         }
 
+        // If user is a student, fetch student level and subjects
+        if (user.role === "student") {
+            const student = await Student.findById(user._id).select('level');
+            if (student) {
+                userFormattedData.level = student.level;
+                const subjects = await Subject.find({ level: student.level }).select("subject_name _id content");
+                userFormattedData.subjects = subjects;
+            }
+        }
+        // If user is a teacher, fetch assigned subjects
+        else if (user.role === 'teacher') {
+            const teacher = await Teacher.findById(user._id).select('subjects');
+            if (teacher) {
+                const subjects = await Subject.find({ _id: { $in: teacher.subjects } }).select('subject_name _id level content');
+                userFormattedData.subjects = subjects;
+            }
+        }
+
+        //send token
+        return res.send(
+            { token: accessToken, user: userFormattedData }
+        )
+
+
     } catch (error) {
-        next(error)
+        console.log(error);
+        next(createError.BadRequest('Failed to Login'))
     }
 }
 
