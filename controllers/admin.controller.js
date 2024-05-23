@@ -17,9 +17,7 @@ const getStudents = async (req, res, next) => {
         const students = await Student.find({}).populate({
             path: '_id',  // Assuming _id is a reference to another collection
             select: 'full_name national_id  isActive'  // Fields to include from the populated document
-        })
-            .select('level _id')  // Fields to include from the main document, excluding its own _id
-            .lean();
+        }).lean()
         // Remap the results to match your desired output structure
         const formattedStudents = students.map(student => ({
             student_id: student._id._id,
@@ -33,20 +31,26 @@ const getStudents = async (req, res, next) => {
         return next(createError.BadRequest())
     }
 }
+// ------------------------------------------------------------
 // matches GET /api/v1/admin/teachers
 const getTeachers = async (req, res, next) => {
     try {
-        const teachers = await Teacher.find({}).populate({
-            path: '_id',  // Assuming _id is a reference to another collection
-            select: 'full_name email isActive'  // Fields to include from the populated document
-        })
-            .select('_id')  // Fields to include from the main document, excluding its own _id
-            .lean();
+        const teachers = await Teacher.find({}).populate([
+            {
+                path: '_id',  // Assuming _id is a reference to another collection
+                select: 'full_name national_id isActive '  // Fields to include from the populated document
+            },
+            {
+                path: 'subjects',
+                select: 'subject_name'
+            }
+        ]).lean()
         // Remap the results to match your desired output structure
         const formattedTeachers = teachers.map(teacher => ({
             _id: teacher._id._id,
+            national_id: teacher._id.national_id,
             full_name: teacher._id.full_name,
-            email: teacher._id.email,
+            subjects: teacher.subjects,
             isActive: teacher._id.isActive,
         }));
         return res.send(formattedTeachers)
@@ -54,9 +58,7 @@ const getTeachers = async (req, res, next) => {
         return next(createError.BadRequest())
     }
 }
-// ------------------------------------------------------------
-
-// -----------------accounts-activation-for-members-------------
+// -------------accounts-activation-for-members--------
 // matches /api/v1/admin/activation
 const activeAccount = async (req, res, next) => {
     try {
@@ -74,51 +76,25 @@ const activeAccount = async (req, res, next) => {
         return next(createError.BadRequest('User not found'))
     }
 }
-// ------------------------------------------------------------
-
-
-// -----------------Payments-----------------------------------
-// matches GET /api/v1/admin/payment
-const getPayment = async (req, res, next) => {
-    const payment = await Payment.find({})
-    return res.send(payment)
-}
-// matches POST /api/v1/admin/payment
-const addOrEditPayment = async (req, res, next) => {
-    // here we check first if exist then edit else add it 
+//----------------------deleting-------------------------------
+// matches /api/v1/admin/del-user
+const delUser = async (req, res, next) => {
     try {
-        const { level, amount, vodafoneCash, instaPay } = req.body
-        const updatedPayment = await Payment.findOneAndUpdate(
-            { level: level }, // Search condition
-            {
-                $set: { // Update object
-                    level: level,
-                    amount: amount,
-                    vodafoneCash: vodafoneCash,
-                    instaPay: instaPay
-                }
-            },
-            { new: true, upsert: true }
-            // If not found upsert creates a new one
-        );
-
-        return res.send(updatedPayment)
+        const { user_id } = req.body
+        const delUser = await User.findByIdAndDelete(user_id)
+        if (!delUser) {
+            throw createError.NotFound('user not Found')
+        }
+        if (delUser.role === 'student') {
+            await Student.findOneAndDelete({ _id: user_id });
+        } else if (delUser.role === 'teacher') {
+            await Teacher.findOneAndDelete({ _id: user_id });
+        }
+        return res.send(delUser)
     } catch (error) {
-        return next(createError.BadRequest('failed to add payment info'))
+        next(createError.BadRequest());
     }
 }
-// matches DEL /api/v1/admin/payment
-const delPayment = async (req, res, next) => {
-    const { level } = req.body
-    const deletedPayment = await Payment.findOneAndDelete({ level: level })
-    if (!deletedPayment) {
-        return next(createError.NotFound('Level not exist!'))
-    }
-    return res.send(deletedPayment)
-}
-// ------------------------------------------------------------
-
-
 
 
 //---------------------subjects--------------------------------
@@ -205,26 +181,51 @@ const delSubject = async (req, res, next) => {
 }
 // ------------------------------------------------------------
 
-//----------------------deleting-------------------------------
-// matches /api/v1/admin/del-user
-const delUser = async (req, res, next) => {
-    try {
-        const { user_id } = req.body
-        const delUser = await User.findByIdAndDelete(user_id)
-        if (!delUser) {
-            next(createError.NotFound('user not Found'))
-        }
-        if (delUser.role === 'student') {
-            await Student.findOneAndDelete({ _id: user_id });
-        } else if (delUser.role === 'teacher') {
-            await Teacher.findOneAndDelete({ _id: user_id });
-        }
-        return res.send(delUser)
-    } catch (error) {
-        return next(createError.BadRequest())
-    }
+
+
+// -----------------Payments---------------------
+// matches GET /api/v1/admin/payment
+const getPayment = async (req, res, next) => {
+    const payment = await Payment.find({})
+    return res.send(payment)
 }
 // ------------------------------------------------------------
+// matches POST /api/v1/admin/payment
+const addOrUpdatePayment = async (req, res, next) => {
+    // here we check first if exist then edit else add it 
+    try {
+        const { level, amount, vodafoneCash, instaPay } = req.body
+        const updatedPayment = await Payment.findOneAndUpdate(
+            { level: level }, // Search condition
+            {
+                $set: { // Update object
+                    level: level,
+                    amount: amount,
+                    vodafoneCash: vodafoneCash,
+                    instaPay: instaPay
+                }
+            },
+            { new: true, upsert: true }
+            // If not found upsert creates a new one
+        );
+
+        return res.send(updatedPayment)
+    } catch (error) {
+        return next(createError.BadRequest('failed to add payment info'))
+    }
+}
+// matches DEL /api/v1/admin/payment
+const delPayment = async (req, res, next) => {
+    const { level } = req.body
+    const deletedPayment = await Payment.findOneAndDelete({ level: level })
+    if (!deletedPayment) {
+        return next(createError.NotFound('Level not exist!'))
+    }
+    return res.send(deletedPayment)
+}
+// ------------------------------------------------------------
+
+
 
 
 
@@ -236,14 +237,13 @@ module.exports = {
     getStudents,
     getTeachers,
     activeAccount,
-
     delUser,
 
+    getPayment,
+    addOrUpdatePayment,
+    delPayment,
     getSubjects,
     addOrUpdateSubject,
     delSubject,
 
-    getPayment,
-    addOrEditPayment,
-    delPayment
 }

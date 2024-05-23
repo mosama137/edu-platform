@@ -21,7 +21,7 @@ adminRouter.delete('/subject', adminController.delSubject)
 
 //---------------------Payments-------------------------------
 adminRouter.get('/payment', adminController.getPayment)
-adminRouter.post('/payment', adminController.addPaymentInfo)
+adminRouter.post('/payment', adminController.addOrUpdatePayment)
 adminRouter.delete('/payment', adminController.delPayment)
 // -----------------------------------------------------------
 

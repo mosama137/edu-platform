@@ -1,9 +1,9 @@
 const router = require('express').Router()
 
-const authRouter = require('./auth/auth_routes')
+const authRouter = require('./auth/auth.routes')
 
 // *-*-*-*-*-*-*-*-Based Role Routes*-*-*-*-*-*-*-**-*-*- 
-const adminRouter = require('./admin/admin_routes')
+const adminRouter = require('./admin/admin.routes')
 // const studentRouter = require('./student/student.routes')
 // const teacherRouter = require('./student/teacher.routes')
 // *------------------------------------------------------
