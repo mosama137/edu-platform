@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 const studentModel = new Schema(
     {
         _id: { type: Schema.Types.ObjectId, ref: 'User' },
-        level: Number,
+        level: { type: Number, required: true },
         subjects: [
             {
                 type: Schema.Types.ObjectId, ref: 'Subject'

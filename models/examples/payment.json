@@ -1,0 +1,26 @@
+{
+    "levels": [
+        {
+            "level": 1,
+            "amount": 500
+        },
+        {
+            "level": 2,
+            "amount": 800
+        },
+        {
+            "level": 3,
+            "amount": 1200
+        }
+    ],
+    "methods": [
+        {
+            "name": "vodafoneCash",
+            "account": "your_vodafone_cash_account"
+        },
+        {
+            "name": "instaPay",
+            "account": "your_instapay_account"
+        }
+    ]
+}

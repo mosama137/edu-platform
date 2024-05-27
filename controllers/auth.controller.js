@@ -5,7 +5,18 @@ const createError = require('http-errors')
 const register = async (req, res, next) => {
     try {
         const { full_name, national_id, role, phone, password, level } = req.body;
-        const user = await User.create({ full_name, national_id, role, phone, email, password });
+        if (role === "student") {
+            if (!level) {
+                throw createError.NotFound("please provide the Level")
+            }
+        }
+        const user = await User.create({
+            full_name,
+            national_id,
+            role,
+            phone,
+            password
+        });
 
         // user Json 
         const userFormattedData = {
@@ -13,7 +24,6 @@ const register = async (req, res, next) => {
             full_name: user.full_name,
             national_id: user.national_id,
             isActive: user.isActive,
-            email: user.email,
             role: user.role,
         };
 
@@ -49,6 +59,9 @@ const register = async (req, res, next) => {
         // Handling Validation Errors for Required or Missing Keys
         else if (error.name === 'ValidationError') {
             return next(createError.BadRequest('Required or Missing Fields'))
+        }
+        else {
+            next(error)
         }
     }
 

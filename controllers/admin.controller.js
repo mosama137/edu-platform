@@ -118,7 +118,7 @@ const delUser = async (req, res, next) => {
 }
 
 
-//---------------------subjects--------------------------------
+//---------------------subjects Page--------------------------------
 // matches GET /api/v1/admin/subject
 const getSubjects = async (req, res, next) => {
     try {
@@ -137,7 +137,7 @@ const getSubjects = async (req, res, next) => {
             subject_name: subject.subject_name,
             level: subject.level,
             // Check if teacher_id and its nested _id exist before accessing full_name
-            teacher_name: subject.teacher_id && subject.teacher_id._id ? subject.teacher_id._id.full_name : null,
+            teacher_name: subject.teacher_id._id ? subject.teacher_id._id.full_name : null,
 
         }))
         return res.send(formattedSubjects)
@@ -204,14 +204,14 @@ const delSubject = async (req, res, next) => {
 
 
 
-// -----------------Payments---------------------
-// matches GET /api/v1/admin/payment
+// -----------------Payments Page---------------------
+// ------matches GET /api/v1/admin/payment
 const getPayment = async (req, res, next) => {
     const payment = await Payment.find({})
     return res.send(payment)
 }
 // ------------------------------------------------------------
-// matches POST /api/v1/admin/payment
+// -----matches POST /api/v1/admin/payment
 const addOrUpdatePayment = async (req, res, next) => {
     // here we check first if exist then edit else add it 
     try {
@@ -226,8 +226,7 @@ const addOrUpdatePayment = async (req, res, next) => {
                     instaPay: instaPay
                 }
             },
-            { new: true, upsert: true }
-            // If not found upsert creates a new one
+            { new: true, upsert: true } // Options: return the modified document, and if not found, create a new one
         );
 
         return res.send(updatedPayment)
