@@ -3,23 +3,18 @@ const Schema = mongoose.Schema
 const bcrypt = require('bcrypt')
 const userModel = new Schema(
     {
-        full_name: {
-            type: String,
-            required: [true, "full name is required"],
-            trim: true,
-        },
         national_id: {
             type: String,
             required: [true, "national id is required"],
             trim: true,
             unique: true,
         },
-        email: {
+        full_name: {
             type: String,
-            required: [true, "email is required"],
-            unique: true,
-            lowercase: true, // Convert email to lowercase
+            required: [true, "full name is required"],
+            trim: true,
         },
+
         phone: {
             type: String,
             required: [true, "phone number is required"],
@@ -38,10 +33,6 @@ const userModel = new Schema(
         isActive: {
             type: Boolean,
             default: true
-        },
-        emailVerified: {
-            type: Boolean,
-            default: false
         },
         profilePictureUrl: {
             type: String,

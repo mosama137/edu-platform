@@ -5,6 +5,11 @@ const studentModel = new Schema(
     {
         _id: { type: Schema.Types.ObjectId, ref: 'User' },
         level: Number,
+        subjects: [
+            {
+                type: Schema.Types.ObjectId, ref: 'Subject'
+            }
+        ]
 
     },
     { timestamps: true }

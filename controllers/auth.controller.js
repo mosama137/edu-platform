@@ -4,7 +4,7 @@ const createError = require('http-errors')
 
 const register = async (req, res, next) => {
     try {
-        const { full_name, national_id, role, phone, email, password, level } = req.body;
+        const { full_name, national_id, role, phone, password, level } = req.body;
         const user = await User.create({ full_name, national_id, role, phone, email, password });
 
         // user Json 
