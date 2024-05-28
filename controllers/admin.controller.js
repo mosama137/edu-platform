@@ -131,21 +131,22 @@ const getCourses = async (req, res, next) => {
             .populate({
                 path: 'teacher_id',
                 select: '_id',
-                match: { teacher_id: { $exists: true } }, // Only populate if teacher_id exists
+                // match: { teacher_id: { $exists: true } }, // Only populate if teacher_id exists
                 populate: {
                     path: '_id',
-                    select: 'full_name _id'
+                    select: 'full_name _id',
+                    // options: { retainNullValues: true } // Return null if _id doesn't exist
                 }
             })
             .select('subject_name level teacher_id');
 
         const formattedSubjects = subjects.map(subject => ({
             subject_id: subject._id,
-            teacher_id: subject.teacher_id ? subject.teacher_id._id._id : null,
+            teacher_id: subject.teacher_id && subject.teacher_id._id ? subject.teacher_id._id._id : null,
             subject_name: subject.subject_name,
             level: subject.level,
             // Check if teacher_id and its nested _id exist before accessing full_name
-            teacher_name: subject.teacher_id._id ? subject.teacher_id._id.full_name : null,
+            teacher_name: subject.teacher_id && subject.teacher_id._id ? subject.teacher_id._id.full_name : null,
 
         }))
         return res.send(formattedSubjects)
@@ -158,25 +159,48 @@ const getCourses = async (req, res, next) => {
 const addOrUpdateCourse = async (req, res, next) => {
     try {
         const { teacher_id, subject_name, level } = req.body
+
         const subject = await Subject.findOneAndUpdate(
             { subject_name: subject_name },
-            {
-                $set: {
-                    subject_name: subject_name,
-                    level: level,
-                    // will add teacher if have value
-                    ...(teacher_id && { teacher_id }),
+            [
+                {
+                    $set: {
+                        subject_name: subject_name,
+                        level: level,
+                        // will add teacher if have value
+                        ...(teacher_id && { teacher_id }),
 
-                }
-            },
+                    }
+                },
+                {
+                    $set: {
+                        teacher_id: {
+                            $cond: {
+                                if: { $eq: [teacher_id, null] },
+                                then: null,
+                                else: '$teacher_id'
+                            }
+                        }
+                    }
+                },
+
+            ],
             { new: true, upsert: true } // Options: return the modified document, and if not found, create a new one
         )
+
+        // Adding Subject to teacher or remove it
         if (teacher_id) {
             await Teacher.findByIdAndUpdate(teacher_id, {
                 $addToSet: {
                     subjects: subject.id
                 }
             })
+        } else {
+            await Teacher.updateMany({ subjects: subject.id }, {
+                $pull: {
+                    subjects: subject.id
+                }
+            });
         }
 
         return res.send(subject)
@@ -200,7 +224,12 @@ const delCourse = async (req, res, next) => {
             { subjects: subject_id }, // Find teachers with the subject ID
             { $pull: { subjects: subject_id } } // Remove the subject ID from the array
         );
-        return res.status(204).send()
+        return res.status(204).send(
+            {
+                status: 204,
+                msg: "done"
+            }
+        )
 
     } catch (error) {
         return next(createError.BadRequest())

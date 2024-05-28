@@ -99,9 +99,9 @@ the request should be json format
 
 ## _First role admin_
 
-## Member Page
+## Member Page:
 
-#### 1. _GET_ /api/v1/admin/students
+### 1. Get Students: _GET_ /api/v1/admin/students
 
 ```Json
 [
@@ -121,7 +121,8 @@ the request should be json format
   }
 ]
 ```
-#### 2. _GET_ /api/v1/admin/teachers
+
+### 2. Get Teachers:  _GET_ /api/v1/admin/teachers
 
 ```JSON
 [
@@ -150,6 +151,7 @@ the request should be json format
 "value":true
 }
 ```
+
 ### Delete User:
 
 #### _DELETE_ /api/v1/admin/user
@@ -159,7 +161,10 @@ the request should be json format
   "user" : "663096ccea3e112a0411f6e5"
 }
 ```
+
 ----------
+
+
 ## Courses Page
 
 #### 1. _GET_ /api/v1/admin/courses
@@ -189,11 +194,9 @@ the request should be json format
 
 
 
-### Subjects control : Add or Update Course
+#### 2. Subjects control : Add or Update Course
 
-_POST_ /api/v1/admin/course
-
-#### 1.Adding
+ 1. Adding _POST_ /api/v1/admin/course
 
 ```JSON
 {
@@ -208,21 +211,27 @@ or
 }
 ```
 
-#### 2. update subject's teacher:
-
-_POST_ /api/v1/admin/course
+ 2. update subject's teacher: _POST_ /api/v1/admin/course
 
 ```Json
+adding teacher
 {
   "subject_name": "Computer Fundamentals",
   "teacher_id":"663096ccea3e112a0411f6e5",
   "level": 1
 }
 ```
+or remove teacher by not sending teacher in json  
+```Json
+
+{
+  "subject_name": "Computer Fundamentals",
+  "level": 1
+}
+```
 
 
-
-#### 3. Delete subject:
+#### 3. Delete Course:
 _DELETE_ /api/v1/admin/course
 
 ```Json
@@ -232,7 +241,7 @@ _DELETE_ /api/v1/admin/course
 ```
 -----
 
-### Payment Page:
+## Payment Page:
 
 #### 1. payment information :
 
