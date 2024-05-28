@@ -31,6 +31,7 @@ const register = async (req, res, next) => {
         switch (role) {
             case "student":
                 await Student.create({ _id: user._id, level });
+                userFormattedData.level = level
                 break;
             case "teacher":
                 await Teacher.create({ _id: user._id });
@@ -67,7 +68,6 @@ const register = async (req, res, next) => {
 
 }
 
-
 const login = async function (req, res, next) {
     try {
         const { username, password } = req.body
@@ -92,7 +92,6 @@ const login = async function (req, res, next) {
             full_name: user.full_name,
             national_id: user.national_id,
             isActive: user.isActive,
-            email: user.email,
             role: user.role
         }
 
@@ -101,17 +100,15 @@ const login = async function (req, res, next) {
             const student = await Student.findById(user._id).select('level');
             if (student) {
                 userFormattedData.level = student.level;
-                const subjects = await Subject.find({ level: student.level }).select("subject_name _id content");
-                userFormattedData.subjects = subjects;
             }
         }
         // If user is a teacher, fetch assigned subjects
         else if (user.role === 'teacher') {
-            const teacher = await Teacher.findById(user._id).select('subjects');
-            if (teacher) {
-                const subjects = await Subject.find({ _id: { $in: teacher.subjects } }).select('subject_name _id level content');
-                userFormattedData.subjects = subjects;
-            }
+            // const teacher = await Teacher.findById(user._id).select('subjects');
+            // if (teacher) {
+            //     const subjects = await Subject.find({ _id: { $in: teacher.subjects } }).select('subject_name _id level content');
+            //     userFormattedData.subjects = subjects;
+            // }
         }
 
         //send token

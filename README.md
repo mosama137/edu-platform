@@ -16,7 +16,6 @@ you should give me data as below in json format
  "national_id": "30203131500559",
  "role":"student",
  "phone":"01065623680",
- "email":"m.osama@gmail.com",
  "password":"12345678",
  "level":1
  }
@@ -32,7 +31,6 @@ you should give me data as below in json format
  "national_id": "30103131500559",
  "role":"teacher",
  "phone":"01065623680",
- "email":"osama.teacher@gmail.com",
  "password":"12345678"
  }
 ```
@@ -45,7 +43,7 @@ the request should be json format
 
 ```JSON
 {
-"username": "30203131500",
+"username": "30203131500", // national id
 "password":"12345678"
 }
 ```
@@ -62,39 +60,8 @@ the request should be json format
   "full_name": "amr osama",
   "national_id": "30403131500559",
   "isActive": true,
-  "email": "a.osama@gmail.com",
   "role": "student",
-  "level": 2,
-  "subjects": [
-    {
-      "_id": "66219d508e722564",
-      "subject_name": "Intro to ML",
-      "content": [
-        {
-          "title": "Lecture 1",
-          "path": "/uploads/lec1"
-        },
-        {
-          "title": "Lecture 2",
-          "path": "/uploads/lec2"
-        }
-      ]
-    },
-    {
-      "_id": "66219d508e722564",
-      "subject_name": "Intro to DL",
-      "content": [
-        {
-          "title": "Lecture 1",
-          "path": "/uploads/lec1"
-        },
-        {
-          "title": "Lecture 2",
-          "path": "/uploads/lec2"
-        }
-      ]
-    }
-  ]
+  "level": 2
 }
 }
 ```
@@ -109,26 +76,22 @@ the request should be json format
     "full_name": "osama mohamed",
     "national_id": "30103131500559",
     "isActive": true,
-    "email": "osama.teacher@gmail.com",
-    "role": "teacher",
-    "subjects": [
-      {
-        "_id": "662d47d293a19d508e722560",
-        "subject_name": "Statistics",
-        "level": 1,
-        "content": [
-        {
-          "title": "Lecture 1",
-          "path": "/uploads/lec1"
-        },
-        {
-          "title": "Lecture 2",
-          "path": "/uploads/lec2"
-        }
-      ]
+    "role": "teacher"
       }
-    ]
-  }
+}
+```
+#### 3. if Admin:
+
+```Json
+{
+  "token": "eyJhb9.eyJOX0.Vy1Ri7Q",
+  "user": {
+    "user_id": "663a8c89affa762",
+    "full_name": "admin",
+    "national_id": "30103131500559",
+    "isActive": true,
+    "role": "Admin"
+      }
 }
 ```
 
@@ -138,6 +101,7 @@ the request should be json format
 
 ### fetching data :
 
+## Member Page
 #### 1. _GET_ /api/v1/admin/subjects
 
 ```JSON
