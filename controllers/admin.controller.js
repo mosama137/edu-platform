@@ -83,10 +83,10 @@ const getTeachers = async (req, res, next) => {
 // matches /api/v1/admin/activation
 const activeAccount = async (req, res, next) => {
     try {
-        const { user_id, active_value } = req.body
-        const user = await User.findByIdAndUpdate(user_id, {
+        const { user, value } = req.body
+        await User.findByIdAndUpdate(user, {
             $set: {
-                isActive: active_value
+                isActive: value
             }
         },
             { new: true }
@@ -97,39 +97,47 @@ const activeAccount = async (req, res, next) => {
         return next(createError.BadRequest('User not found'))
     }
 }
-//----------------------deleting-------------------------------
 // matches /api/v1/admin/del-user
 const delUser = async (req, res, next) => {
     try {
-        const { user_id } = req.body
-        const delUser = await User.findByIdAndDelete(user_id)
+        const { user } = req.body
+        const delUser = await User.findByIdAndDelete(user)
         if (!delUser) {
             throw createError.NotFound('user not Found')
         }
-        if (delUser.role === 'student') {
-            await Student.findOneAndDelete({ _id: user_id });
-        } else if (delUser.role === 'teacher') {
-            await Teacher.findOneAndDelete({ _id: user_id });
+        // Delete associated documents based on the user's role
+        switch (delUser.role) {
+            case 'student':
+                await Student.findOneAndDelete({ _id: user });
+                break;
+            case 'teacher':
+                await Teacher.findOneAndDelete({ _id: user });
+                await Subject.updateMany({ teacher_id: user }, { $unset: { teacher_id: 1 } });
+                break;
+            // Add more cases if there are other roles
         }
         return res.send(delUser)
     } catch (error) {
-        next(createError.BadRequest());
+        next(error);
     }
 }
 
 
 //---------------------subjects Page--------------------------------
 // matches GET /api/v1/admin/subject
-const getSubjects = async (req, res, next) => {
+const getCourses = async (req, res, next) => {
     try {
-        const subjects = await Subject.find({}).populate({
-            path: 'teacher_id',
-            select: '_id',
-            populate: {
-                path: '_id',
-                select: "full_name _id"
-            } // Include only the 'name' field from the Teacher model
-        }).select('subject_name level teacher_id')
+        const subjects = await Subject.find({})
+            .populate({
+                path: 'teacher_id',
+                select: '_id',
+                match: { teacher_id: { $exists: true } }, // Only populate if teacher_id exists
+                populate: {
+                    path: '_id',
+                    select: 'full_name _id'
+                }
+            })
+            .select('subject_name level teacher_id');
 
         const formattedSubjects = subjects.map(subject => ({
             subject_id: subject._id,
@@ -142,11 +150,12 @@ const getSubjects = async (req, res, next) => {
         }))
         return res.send(formattedSubjects)
     } catch (error) {
+        console.log(error);
         next(createError.BadRequest())
     }
 }
 // matches POST /api/v1/admin/subject
-const addOrUpdateSubject = async (req, res, next) => {
+const addOrUpdateCourse = async (req, res, next) => {
     try {
         const { teacher_id, subject_name, level } = req.body
         const subject = await Subject.findOneAndUpdate(
@@ -160,10 +169,7 @@ const addOrUpdateSubject = async (req, res, next) => {
 
                 }
             },
-            {
-                new: true,
-                upsert: true, // add if not exist
-            }
+            { new: true, upsert: true } // Options: return the modified document, and if not found, create a new one
         )
         if (teacher_id) {
             await Teacher.findByIdAndUpdate(teacher_id, {
@@ -182,7 +188,7 @@ const addOrUpdateSubject = async (req, res, next) => {
 }
 
 // matches DELETE /api/v1/admin/subject
-const delSubject = async (req, res, next) => {
+const delCourse = async (req, res, next) => {
     try {
         const subject_id = req.body
         const deletedSubject = await Subject.findByIdAndDelete({ subject_id })
@@ -254,16 +260,20 @@ const delPayment = async (req, res, next) => {
 
 
 module.exports = {
+    // member Page
     getStudents,
     getTeachers,
     activeAccount,
     delUser,
+    // courses page
+    getCourses,
+    addOrUpdateCourse,
+    delCourse,
 
+    // payment page
     getPayment,
     addOrUpdatePayment,
     delPayment,
-    getSubjects,
-    addOrUpdateSubject,
-    delSubject,
+
 
 }

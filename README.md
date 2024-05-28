@@ -99,10 +99,70 @@ the request should be json format
 
 ## _First role admin_
 
-### fetching data :
-
 ## Member Page
-#### 1. _GET_ /api/v1/admin/subjects
+
+#### 1. _GET_ /api/v1/admin/students
+
+```Json
+[
+  {
+    "student_id": "66d15d26b39e7",
+    "full_name": "mohamed osama",
+    "national_id": "30203131500",
+    "isActive": true,
+    "level": 1
+  },
+  {
+    "_id": "663a8bb04b15ad139ea",
+    "full_name": "amr osama",
+    "national_id": "30203131500",
+    "isActive": true,
+    "level": 2
+  }
+]
+```
+#### 2. _GET_ /api/v1/admin/teachers
+
+```JSON
+[
+  {
+    "_id": "663a8b89affa762",
+    "full_name": "osama mohamed",
+    "national_id": "30203131500",
+    "isActive": true
+  },
+  {
+    "_id": "663491cbd22c8b",
+    "full_name": "seif mohamed",
+    "national_id": "30203131500",
+    "isActive": true
+  }
+]
+```
+
+### Modify Activation Accounts:
+
+#### _POST_ /api/v1/admin/activation
+
+```JSON
+{
+"user":"66288a510cd032dda"
+"value":true
+}
+```
+### Delete User:
+
+#### _DELETE_ /api/v1/admin/user
+
+```Json
+{
+  "user" : "663096ccea3e112a0411f6e5"
+}
+```
+----------
+## Courses Page
+
+#### 1. _GET_ /api/v1/admin/courses
 
 ```JSON
 [
@@ -123,66 +183,17 @@ the request should be json format
 ]
 ```
 
-#### 2. _GET_ /api/v1/admin/students
 
-```Json
-[
-  {
-    "student_id": "66d15d26b39e7",
-    "full_name": "mohamed osama",
-    "national_id": "30203131500",
-    "isActive": true,
-    "level": 1
-  },
-  {
-    "_id": "663a8bb04b15ad139ea",
-    "full_name": "amr osama",
-    "national_id": "30203131500",
-    "isActive": true,
-    "level": 2
-  }
-]
-```
 
-#### 3. _GET_ /api/v1/admin/teachers
 
-```JSON
-[
-  {
-    "_id": "663a8b89affa762",
-    "full_name": "osama mohamed",
-    "national_id": "30203131500",
-    "isActive": true
-  },
-  {
-    "_id": "663491cbd22c8b",
-    "full_name": "seif mohamed",
-    "national_id": "30203131500",
-    "isActive": true
-  }
-]
-```
 
-### control accounts activation :
 
-request should be post with json format
 
-#### _POST_ /api/v1/admin/activation
+### Subjects control : Add or Update Course
 
-```JSON
-{
-"user_id":"66288a510cd032dda"
-"active_value":true
-}
-```
+_POST_ /api/v1/admin/course
 
-### Subjects control :
-
-#### 1. add subject
-
-_POST_ /api/v1/admin/subject
-
-you can provide teacher id or not
+#### 1.Adding
 
 ```JSON
 {
@@ -199,38 +210,29 @@ or
 
 #### 2. update subject's teacher:
 
-_POST_ /api/v1/admin/subject-teacher
+_POST_ /api/v1/admin/course
 
 ```Json
 {
+  "subject_name": "Computer Fundamentals",
   "teacher_id":"663096ccea3e112a0411f6e5",
-  "subject_id": "662d47cc93a19d508e72255e"
+  "level": 1
 }
 ```
 
-#### 3. Delete User:
 
-_DELETE_ /api/v1/admin/user
 
-```Json
-{
-  "user_id" : "663096ccea3e112a0411f6e5"
-}
-```
-
-#### 4. Delete subject:
-
-_DELETE_ /api/v1/admin/subject
+#### 3. Delete subject:
+_DELETE_ /api/v1/admin/course
 
 ```Json
 {
   "subject_id":"662d47cc93a19d508e72255e"
 }
 ```
+-----
 
-##
-
-### Payment:
+### Payment Page:
 
 #### 1. payment information :
 
