@@ -127,11 +127,21 @@ the request should be json format
 ```JSON
 [
   {
-    "_id": "663a8b89affa762",
-    "full_name": "osama mohamed",
-    "national_id": "30203131500",
+    "_id": "6656236078acea5444e2ee2a",
+    "national_id": "30103131500559",
+    "full_name": "amr osama",
+    "subjects": [
+      {
+        "_id": "662d47cc93a19d508e72255e",
+        "subject_name": "English Language"
+      },
+      {
+        "_id": "662e39c027db604371f6d820",
+        "subject_name": "Computer Fundamentals"
+      }
+    ],
     "isActive": true
-  },
+  },,
   {
     "_id": "663491cbd22c8b",
     "full_name": "seif mohamed",

@@ -64,7 +64,7 @@ const getTeachers = async (req, res, next) => {
             },
             {
                 path: 'subjects',
-                select: 'subject_name'
+                select: 'subject_name subject_id'
             }
         ]).lean()
         // Remap the results to match your desired output structure
