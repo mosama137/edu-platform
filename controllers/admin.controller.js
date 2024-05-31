@@ -214,8 +214,8 @@ const addOrUpdateCourse = async (req, res, next) => {
 // matches DELETE /api/v1/admin/subject
 const delCourse = async (req, res, next) => {
     try {
-        const subject_id = req.body
-        const deletedSubject = await Subject.findByIdAndDelete({ subject_id })
+        const subject_id = req.body.subject_id
+        const deletedSubject = await Subject.findByIdAndDelete(subject_id)
         if (!deletedSubject) {
             return next(createError.BadRequest('subject not found'))
         }
@@ -232,6 +232,7 @@ const delCourse = async (req, res, next) => {
         )
 
     } catch (error) {
+        console.log(error);
         return next(createError.BadRequest())
     }
 }

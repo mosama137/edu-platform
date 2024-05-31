@@ -243,9 +243,7 @@ _DELETE_ /api/v1/admin/course
 
 ## Payment Page:
 
-#### 1. payment information :
-
-_GET_ /api/v1/admin/payments
+### 1. payment information : _GET_ /api/v1/admin/payments
 
 ```Json
 [
