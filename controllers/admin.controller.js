@@ -195,10 +195,10 @@ const addOrUpdateCourse = async (req, res, next) => {
                     subjects: subject.id
                 }
             })
-        } else {
-            await Teacher.updateMany({ subjects: subject.id }, {
+        } else if (!teacher_id) {
+            await Teacher.updateMany({ subjects: subject._id }, {
                 $pull: {
-                    subjects: subject.id
+                    subjects: subject._id
                 }
             });
         }
@@ -252,6 +252,9 @@ const addOrUpdatePayment = async (req, res, next) => {
     // here we check first if exist then edit else add it 
     try {
         const { level, amount, vodafoneCash, instaPay } = req.body
+        if (level && amount) {
+
+        }
         const updatedPayment = await Payment.findOneAndUpdate(
             { level: level }, // Search condition
             {

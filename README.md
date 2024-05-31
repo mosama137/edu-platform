@@ -256,24 +256,18 @@ _DELETE_ /api/v1/admin/course
 ### 1. payment information : _GET_ /api/v1/admin/payments
 
 ```Json
-[
 {
-  "level": 1,
-  "amount": 700,
-  "methods":{
-  "vodafoneCash":"01029872506",
-  "instaPay": "mosama137"
-  }
-},
-{
-  "level": 2,
-  "amount": 1000,
-  "methods":{
-  "vodafoneCash":"01029872506",
-  "instaPay": "mosama137"
-  }
+  "levels": [
+    { "level": 1, "amount": 200 },
+    { "level": 2, "amount": 500 },
+    { "level": 3, "amount": 700 },
+    { "level": 4, "amount": 800 }
+  ],
+  "methods": [
+    { "name": "instapay", "account": "mosama137@instapay" },
+    { "name": "Vodafone Cash", "account": "01065623680" }
+  ]
 }
-]
 ```
 
 #### 2. Add payment:
