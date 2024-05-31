@@ -195,7 +195,7 @@ const addOrUpdateCourse = async (req, res, next) => {
                     subjects: subject.id
                 }
             })
-        } else if (teacher_id === null) {
+        } else if (!teacher_id) {
             await Teacher.updateMany({ subjects: subject.id }, {
                 $pull: {
                     subjects: subject.id
