@@ -248,28 +248,54 @@ const getPayment = async (req, res, next) => {
 }
 // ------------------------------------------------------------
 // -----matches POST /api/v1/admin/payment
+// updating element in array mongodb
 const addOrUpdatePayment = async (req, res, next) => {
-    // here we check first if exist then edit else add it 
+    // here we check first if exist then edit else add it
     try {
         const { level, amount, vodafoneCash, instaPay } = req.body
         if (level && amount) {
+            const filter = { "levels.level": level }; // Match documents where the level exists in the levels array
+            const update = { $set: { "levels.$.amount": amount } }; // Update the amount of the matched level
 
+            const options = { new: true, upsert: true }; // Options: return the modified document, and if not found, create a new one
+
+            const payment = await Payment.findOneAndUpdate(filter, update, options);
+
+            if (!payment) {
+                // If the level doesn't exist, add it to the levels array
+                const newPayment = await Payment.findOneAndUpdate(
+                    {},
+                    {
+                        $push: {
+                            levels: { level, amount }
+                        }
+                    },
+                    options
+                );
+                return res.send(newPayment);
+            }
+
+            return res.send(payment);
         }
-        const updatedPayment = await Payment.findOneAndUpdate(
-            { level: level }, // Search condition
-            {
-                $set: { // Update object
-                    level: level,
-                    amount: amount,
-                    vodafoneCash: vodafoneCash,
-                    instaPay: instaPay
-                }
-            },
-            { new: true, upsert: true } // Options: return the modified document, and if not found, create a new one
-        );
 
-        return res.send(updatedPayment)
+
+
+
+        // const updatedPayment = await Payment.findOneAndUpdate(
+        //     { level: level }, // Search condition
+        //     {
+        //         $set: { // Update object
+        //             level: level,
+        //             amount: amount,
+        //             vodafoneCash: vodafoneCash,
+        //             instaPay: instaPay
+        //         }
+        //     },
+        //     { new: true, upsert: true } // Options: return the modified document, and if not found, create a new one
+        // );
+
     } catch (error) {
+        console.log(error);
         return next(createError.BadRequest('failed to add payment info'))
     }
 }
