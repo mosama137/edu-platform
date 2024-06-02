@@ -27,6 +27,9 @@ adminRouter.delete('/pay/level', adminController.delPayLevel)
 adminRouter.get('/pay/method', adminController.getPayMethod)
 adminRouter.post('/pay/method', adminController.addOrUpdatePayMethod)
 adminRouter.delete('/pay/method', adminController.delPayMethod)
+adminRouter.get('/pay/history', adminController.getPayhistory)
+adminRouter.post('/pay/history', adminController.submitPayment)
+
 // -----------------------------------------------------------
 
 

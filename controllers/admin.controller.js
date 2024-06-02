@@ -317,6 +317,59 @@ const delPayMethod = async (req, res, next) => {
         console.log(error);
     }
 }
+// ------matches GET /api/v1/admin/pay/history
+const getPayhistory = async (req, res, next) => {
+    try {
+        const history = await PaymentHistory.find({}).populate({
+            path: 'user_id',
+            select: 'full_name national_id isActive'
+        }).lean()
+        const fromattedHistory = history.map(history => ({
+            user_id: history.user_id._id,
+            name: history.user_id.full_name,
+            national_id: history.user_id.national_id,
+            level: history.level,
+            paid_from: history.paid_from,
+            method: history.payment_method,
+            date: history.createdAt,
+
+
+        }))
+        res.send(fromattedHistory)
+    } catch (error) {
+
+    }
+}
+
+// ------matches POST /api/v1/admin/pay/history
+const submitPayment = async (req, res, next) => {
+    try {
+        const { user_id } = req.body
+        if (user_id) {
+            await PaymentHistory.findByIdAndUpdate(user_id, { $set: { status: "Paid" } })
+            await User.findByIdAndUpdate(user_id, { $set: { isActive: true } })
+            res.send({ status: 204, msg: "done" })
+        }
+    } catch (error) {
+        next(createError.BadRequest())
+    }
+}
+// ------matches POST /api/v1/student/pay/history
+const addPayhistory = async (req, res, next) => {
+    try {
+        const { user_id, level, payment_method, paid_from, paid_to } = req.body
+        const payment = await PaymentHistory.create({
+            user_id,
+            level,
+            payment_method,
+            paid_from,
+            paid_to
+        })
+        res.send(payment)
+    } catch (error) {
+
+    }
+}
 
 
 
@@ -340,6 +393,7 @@ module.exports = {
     getPayMethod,
     addOrUpdatePayMethod,
     delPayMethod,
-
-
+    getPayhistory,
+    submitPayment,
+    addPayhistory,
 }

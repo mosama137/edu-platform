@@ -328,4 +328,35 @@ _DELETE_ /api/v1/admin/course
 }
 ```
 
+### 7. Get Payment History: _GET_ /api/v1/admin/pay/history
+```Json
+[
+  {
+    "user_id": "66585bd8a8fb5080bd8c3313",
+    "name": "muhammad Hassan",
+    "national_id": "12345678901234",
+    "level": 1,
+    "paid_from": "osama13",
+    "method": "instapay",
+    "date": "2024-06-02T05:47:20.328Z"
+  },
+  {
+    "user_id": "66585bd8a8fb5080bd8c3313",
+    "name": "muhammad Hassan",
+    "national_id": "12345678901234",
+    "level": 1,
+    "paid_from": "osama13",
+    "method": "instapay",
+    "date": "2024-06-02T05:47:48.829Z"
+  }
+]
+```
+
+### 8. Submit Payment Request: _POST_ /api/v1/admin/pay/history
+```JSON
+{
+  "user_id":"66585bd8a8fb5080bd8c3313"
+}
+```
+
 ## _Second role teacher_

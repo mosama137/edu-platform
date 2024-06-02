@@ -9,7 +9,6 @@ const paymentHistorySchema = new Schema({
     },
     payment_method: {
         type: String,
-        enum: ['vodafoneCash', 'instaPay'],
     },
     paid_from: {
         type: String,
