@@ -80,6 +80,7 @@ the request should be json format
       }
 }
 ```
+
 #### 3. if Admin:
 
 ```Json
@@ -122,7 +123,7 @@ the request should be json format
 ]
 ```
 
-### 2. Get Teachers:  _GET_ /api/v1/admin/teachers
+### 2. Get Teachers: _GET_ /api/v1/admin/teachers
 
 ```JSON
 [
@@ -172,8 +173,7 @@ the request should be json format
 }
 ```
 
-----------
-
+---
 
 ## Courses Page
 
@@ -198,15 +198,9 @@ the request should be json format
 ]
 ```
 
-
-
-
-
-
-
 #### 2. Subjects control : Add or Update Course
 
- 1. Adding _POST_ /api/v1/admin/course
+1.  Adding _POST_ /api/v1/admin/course
 
 ```JSON
 {
@@ -221,7 +215,7 @@ or
 }
 ```
 
- 2. update subject's teacher: _POST_ /api/v1/admin/course
+2.  update subject's teacher: _POST_ /api/v1/admin/course
 
 ```Json
 adding teacher
@@ -231,7 +225,9 @@ adding teacher
   "level": 1
 }
 ```
-or remove teacher by not sending teacher in json  
+
+or remove teacher by not sending teacher in json
+
 ```Json
 
 {
@@ -240,8 +236,8 @@ or remove teacher by not sending teacher in json
 }
 ```
 
-
 #### 3. Delete Course:
+
 _DELETE_ /api/v1/admin/course
 
 ```Json
@@ -249,47 +245,86 @@ _DELETE_ /api/v1/admin/course
   "subject_id":"662d47cc93a19d508e72255e"
 }
 ```
------
+
+---
 
 ## Payment Page:
 
-### 1. payment information : _GET_ /api/v1/admin/payments
+### 1. payment Levels information : _GET_ /api/v1/admin/pay/level
 
 ```Json
-{
-  "levels": [
-    { "level": 1, "amount": 200 },
-    { "level": 2, "amount": 500 },
-    { "level": 3, "amount": 700 },
-    { "level": 4, "amount": 800 }
-  ],
-  "methods": [
-    { "name": "instapay", "account": "mosama137@instapay" },
-    { "name": "Vodafone Cash", "account": "01065623680" }
-  ]
-}
+[
+  {
+    "id": "665bc193ac30c3fe49cad982",
+    "level": 2,
+    "amount": 700
+  },
+  {
+    "id": "665bc1aaac30c3fe49cae875",
+    "level": 1,
+    "amount": 800
+  },
+  {
+    "id": "665bc264ac30c3fe49cb66da",
+    "level": 3,
+    "amount": 700
+  },
+  {
+    "id": "665bc26cac30c3fe49cb6c77",
+    "level": 4,
+    "amount": 1000
+  }
+]
 ```
 
-#### 2. Add payment:
-
-_POST_ /api/v1/admin/payment
+### 2. Add or edit payment level: _POST_ /api/v1/admin/pay/level
 
 ```JSON
 {
   "level": 3,
-  "amount": 700,
-  "vodafoneCash":"01029872506",
-  "instaPay": "mosama137"
+  "amount": 700
 }
 ```
 
-#### 3. Delete payment:
-
-_DELETE_ /api/v1/admin/payment
+### 3. Delete payment level: _DELETE_ /api/v1/admin/pay/level
 
 ```Json
 {
   "level": 1
+}
+```
+
+### 4. payment Methods information : _GET_ /api/v1/admin/pay/method
+
+```Json
+[
+  {
+    "id": "665bca3fac30c3fe49d0c594",
+    "name": "instapay",
+    "account": "mosama"
+  },
+  {
+    "id": "665bca6bac30c3fe49d0e3c2",
+    "name": "vodafone cash",
+    "account": "01065623680"
+  }
+]
+```
+
+### 5. Add or edit payment Method: _POST_ /api/v1/admin/pay/method
+
+```JSON
+{
+  "name":"instaPay",
+  "account":"mosama"
+}
+```
+
+### 6. Delete payment Method: _DELETE_ /api/v1/admin/pay/method
+
+```Json
+{
+  "name": "vodafone cash"
 }
 ```
 

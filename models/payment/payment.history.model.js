@@ -30,6 +30,6 @@ const paymentHistorySchema = new Schema({
 )
 
 // Create Payment Model
-const PaymentHistory = mongoose.model('PaymentHistory', paymentHistorySchema);
+const PaymentHistory = mongoose.model('Payment History', paymentHistorySchema);
 
 module.exports = PaymentHistory;

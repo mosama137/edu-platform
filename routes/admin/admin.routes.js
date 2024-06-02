@@ -19,9 +19,14 @@ adminRouter.delete('/course', adminController.delCourse)
 // -----------------------------------------------------------
 
 //---------------------Payments-------------------------------
-adminRouter.get('/payment', adminController.getPayment)
-adminRouter.post('/payment', adminController.addOrUpdatePayment)
-adminRouter.delete('/payment', adminController.delPayment)
+// ----------------------Levels------------------------------
+adminRouter.get('/pay/level', adminController.getPayLevels)
+adminRouter.post('/pay/level', adminController.addOrUpdatePayLevel)
+adminRouter.delete('/pay/level', adminController.delPayLevel)
+// ----------------------Methods-----------------------------
+adminRouter.get('/pay/method', adminController.getPayMethod)
+adminRouter.post('/pay/method', adminController.addOrUpdatePayMethod)
+adminRouter.delete('/pay/method', adminController.delPayMethod)
 // -----------------------------------------------------------
 
 

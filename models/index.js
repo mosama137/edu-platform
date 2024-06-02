@@ -6,8 +6,10 @@ const Subject = require('./subject/subject_model')
 const Exam = require('./exam/exam.model')
 const ExamResult = require('./exam_results/exam.result')
 
-const Payment = require('./payment/payment.model')
-const PaymentHistory = require('./payment/payment.history')
+
+const PaymentLevels = require('./payment/payment.levels.model')
+const PaymentMethods = require('./payment/payment.methods.model')
+const PaymentHistory = require('./payment/payment.history.model')
 
 module.exports = {
     User,
@@ -17,6 +19,7 @@ module.exports = {
     Subject,
     Exam,
     ExamResult,
-    Payment,
+    PaymentLevels,
+    PaymentMethods,
     PaymentHistory
 }
