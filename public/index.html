@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>File Upload</title>
+</head>
+
+<body>
+    <h2>Upload PDF</h2>
+    <form action="/api/v1/teacher/content/" method="post" enctype="multipart/form-data">
+        <label for="pdf">Choose PDF File:</label><br>
+        <input type="file" id="pdf" name="pdf" accept=".pdf"><br><br>
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title"><br><br>
+        <label for="subject">Choose Subject:</label><br>
+        <select id="subject" name="subject_name">
+            <option value="English Language">English Language</option>
+            <option value="Statistics">Statistics</option>
+            <option value="Mathematics for Computer Science">Mathematics for Computer Science</option>
+        </select><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+</body>
+
+</html>

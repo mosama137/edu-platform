@@ -360,3 +360,61 @@ _DELETE_ /api/v1/admin/course
 ```
 
 ## _Second role teacher_
+
+## Courses Page:
+
+### 1. getCourses: _GET_ /api/v1/teacher/Courses
+
+request by 
+```JSON
+{
+  "user_id":"6656236078acea5444e2ee2a"
+}
+```
+response:
+```JSON
+[
+  {
+    "subject_id": "662d47cc93a19",
+    "subject_name": "English Language",
+    "level": 1,
+    "content": [
+      {
+        "title": "lec1",
+        "path": "/public/files/1717463024973-carbon_footprint_system_O6U[1111].pdf",
+        "_id": "665e67f177ca4327da395ee4"
+      }
+    ]
+  },
+  {
+    "subject_id": "662d47e193a1",
+    "subject_name": "Mathematics for Computer Science",
+    "level": 1,
+    "content": [
+      {
+        "title": "lec1",
+        "path": "/public/files/1717463045173-carbon_footprint_system_O6U[1111].pdf",
+        "_id": "665e680577ca4327da395ee6"
+      }
+    ]
+  }
+]
+```
+
+
+### 2. uploadContent: _POST_ /api/v1/teacher/content
+you send a form that contains :
+- subject_name : this for search and add content
+- title: the name of lecture
+- file: you should set in form :
+```<input type="file" id="pdf" name="pdf" accept=".pdf"> ```
+
+### 3. delContent: _DELETE_ /api/v1/teacher/content
+```JSON
+{
+  "subject_name":"English Language",
+  "title":"lec1"
+}
+```
+
+## Exam Page:

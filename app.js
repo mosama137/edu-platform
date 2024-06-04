@@ -36,7 +36,7 @@ class MyApp {
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(express.json());
         this.app.use(helmet())
-
+        this.app.use("/public", express.static("public"))
 
     }
     // setup routes
@@ -50,6 +50,7 @@ class MyApp {
         })
         // handle errors
         this.app.use((err, req, res, next) => {
+            console.log(err);
             res.status(err.status || 500)
             res.send({
                 error: {
