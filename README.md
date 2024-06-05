@@ -418,3 +418,44 @@ you send a form that contains :
 ```
 
 ## Exam Page:
+### 1. getExams : _GET_ /api/v1/teacher/exam
+- pass the user_id of teacher to fetch the exams:
+```JSON
+{
+  "user_id": "54d5fg4dsg45df4g"
+}
+```
+### 2. uploadExam: _POST_ /api/v1/teacher/exam
+
+- pass these data to create :
+```JSON
+{
+  "teacher_id": "352d434g1dfgdf",
+  "subject_id": "dgh54f5ghfg54h5f4gh",
+  "title": "Sample Exam",
+  "startAt": "2024-06-10T09:00:00Z",
+  "duration": 90,
+  "questions": [
+      {
+          "questionText": "What is the capital of France?",
+          "options": ["London", "Paris", "Berlin", "Rome"],
+          "correctOptionIndex": 1
+      },
+      {
+          "questionText": "Who wrote 'Romeo and Juliet'?",
+          "options": ["William Shakespeare", "Charles Dickens", "Jane Austen", "Leo Tolstoy"],
+          "correctOptionIndex": 0
+      }
+  ]
+}
+
+```
+### 3. delExam: _DELETE_ /api/v1/teacher/exam
+- pass the exam_id:
+```JSON
+{
+  "exam_id":"ghfdjt54hj5g4"
+}
+```
+
+

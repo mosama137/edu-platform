@@ -11,5 +11,12 @@ teacherRouter.get('/courses', teacherController.getCourses)
 teacherRouter.post('/content', upload.single('pdf'), teacherController.uploadContent)
 teacherRouter.delete('/content', teacherController.delContent)
 
+// -------------------------EXAM Page------------------------------------
+teacherRouter.get('/exam', teacherController.getExams)
+teacherRouter.post('/exam', teacherController.uploadExam)
+teacherRouter.delete('/exam', teacherController.delExam)
+
+
+
 
 module.exports = teacherRouter

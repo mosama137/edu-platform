@@ -10,6 +10,10 @@ const questionSchema = new Schema({
 
 
 const examSchema = new Schema({
+    teacher_id: {
+        type: Schema.ObjectId,
+        ref: "User"
+    },
     subject_id: {
         type: Schema.ObjectId,
         ref: "Subject"

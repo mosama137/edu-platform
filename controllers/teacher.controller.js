@@ -1,5 +1,5 @@
 const upload = require('../helpers/upload.files')
-const { Subject, Teacher, Student, } = require('../models')
+const { Subject, Teacher, Student, Exam, } = require('../models')
 const createError = require('http-errors')
 
 
@@ -63,20 +63,50 @@ const delContent = async (req, res, next) => {
 }
 
 // -------------------------Exam Page------------------------------------
+// matches GET /api/v1/teacher/exam
+const getExams = async (req, res, next) => {
+    try {
+        const { user_id } = req.body
+        const exams = await Exam.find({ teacher_id: user_id })
+        res.send(exams)
+    } catch (error) {
+        next(createError.BadRequest("something went wrong!"))
+    }
+}
 
-// matches GET /api/v1/teacher/upload/exam
+// matches POST /api/v1/teacher/exam
 const uploadExam = async (req, res, next) => {
     try {
-
+        const { teacher_id, subject_id, title, startAt, duration, questions } = req.body
+        const createdExam = await Exam.create({
+            teacher_id: teacher_id,
+            subject_id: subject_id,
+            title: title,
+            startAt: startAt,
+            duration: duration,
+            questions: questions
+        })
+        res.send({
+            status: 201,
+            msg: 'Exam has been created',
+            exam: createdExam,
+        })
     } catch (error) {
-
+        next(createError.BadRequest('failed to create the exam'))
     }
 }
 // matches GET /api/v1/teacher/upload/exam
 const delExam = async (req, res, next) => {
     try {
+        const { exam_id } = req.body
+        const deletedExam = Exam.findByIdAndDelete(exam_id)
+        if (!deletedExam) {
+            next(createError.NotFound('Exam not Found'))
+        }
+        res.send(deletedExam)
 
     } catch (error) {
+        next(createError.BadRequest('failed to delete Exam'))
 
     }
 }
@@ -86,6 +116,7 @@ module.exports = {
     getCourses,
     uploadContent,
     delContent,
+    getExams,
     uploadExam,
     delExam
 }
