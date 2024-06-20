@@ -329,6 +329,7 @@ _DELETE_ /api/v1/admin/course
 ```
 
 ### 7. Get Payment History: _GET_ /api/v1/admin/pay/history
+
 ```Json
 [
   {
@@ -353,6 +354,7 @@ _DELETE_ /api/v1/admin/course
 ```
 
 ### 8. Submit Payment Request: _POST_ /api/v1/admin/pay/history
+
 ```JSON
 {
   "user_id":"66585bd8a8fb5080bd8c3313"
@@ -365,13 +367,16 @@ _DELETE_ /api/v1/admin/course
 
 ### 1. getCourses: _GET_ /api/v1/teacher/Courses
 
-request by 
+request by
+
 ```JSON
 {
   "user_id":"6656236078acea5444e2ee2a"
 }
 ```
+
 response:
+
 ```JSON
 [
   {
@@ -401,15 +406,17 @@ response:
 ]
 ```
 
-
 ### 2. uploadContent: _POST_ /api/v1/teacher/content
+
 you send a form that contains :
+
 - subject_name : this for search and add content
 - title: the name of lecture
 - file: you should set in form :
-```<input type="file" id="pdf" name="pdf" accept=".pdf"> ```
+  `<input type="file" id="pdf" name="pdf" accept=".pdf"> `
 
 ### 3. delContent: _DELETE_ /api/v1/teacher/content
+
 ```JSON
 {
   "subject_name":"English Language",
@@ -418,16 +425,21 @@ you send a form that contains :
 ```
 
 ## Exam Page:
+
 ### 1. getExams : _GET_ /api/v1/teacher/exam
+
 - pass the user_id of teacher to fetch the exams:
+
 ```JSON
 {
   "user_id": "54d5fg4dsg45df4g"
 }
 ```
+
 ### 2. uploadExam: _POST_ /api/v1/teacher/exam
 
 - pass these data to create :
+
 ```JSON
 {
   "teacher_id": "352d434g1dfgdf",
@@ -450,12 +462,58 @@ you send a form that contains :
 }
 
 ```
+
 ### 3. delExam: _DELETE_ /api/v1/teacher/exam
+
 - pass the exam_id:
+
 ```JSON
 {
   "exam_id":"ghfdjt54hj5g4"
 }
 ```
 
+## _Student Role_
 
+### 1. getCourses:_GET_ /api/v1/student/courses
+
+- first you fetch courses by level send this->
+
+```json
+{
+  "level": 1
+}
+```
+
+- the response is :
+
+```json
+[
+  {
+    "subject_id": "662d47cc93a72255e",
+    "subject_name": "English Language",
+    "level": 1,
+    "content": [
+      {
+        "title": "lec1",
+        "path": "/public/files/124973.pdf",
+        "_id": "665e67f177ca4327da395ee4"
+      }
+    ]
+  },
+  {
+    "subject_id": "662d47e193a19d562",
+    "subject_name": "Mathematics for Computer Science",
+    "level": 1,
+    "content": [
+      {
+        "title": "lec1",
+        "path": "/public/files/1717463.pdf",
+        "_id": "665e680577ca4327da395ee6"
+      }
+    ]
+  }
+]
+```
+
+### 2.

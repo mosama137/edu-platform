@@ -6,6 +6,8 @@ const authRouter = require('./auth/auth.routes')
 const adminRouter = require('./admin/admin.routes')
 // const studentRouter = require('./student/student.routes')
 const teacherRouter = require('./teacher/teacher.routes')
+const studentRouter = require('./student/student.routes')
+
 // *------------------------------------------------------
 // *-*-*-*-*-*-*-*-*-*helpers-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 const { verifyToken } = require('../helpers/access_token')
@@ -22,12 +24,13 @@ router.use('/auth', authRouter)
 // router.use('/admin', verifyToken, verifyRole('admin'), adminRouter)
 router.use('/admin', adminRouter)
 
-// // route matches api/v1/student/
-// router.use('/student', verifyToken, verifyRole('student'), studentRouter)
-
-// // route matches api/v1/teacher/
+// route matches api/v1/teacher/
 // router.use('/teacher', verifyToken, verifyRole('teacher'), teacherRouter)
 router.use('/teacher', teacherRouter)
+
+// route matches api/v1/student/
+// router.use('/student', verifyToken, verifyRole('student'), studentRouter)
+router.use('/student', studentRouter)
 
 router.post('/upload', upload.single('file'), (req, res) => {
     // Handle the uploaded file
