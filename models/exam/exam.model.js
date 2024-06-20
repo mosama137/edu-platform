@@ -10,6 +10,10 @@ const questionSchema = new Schema({
 
 
 const examSchema = new Schema({
+    level: {
+        type: Number,
+        required: true
+    },
     teacher_id: {
         type: Schema.ObjectId,
         ref: "User"

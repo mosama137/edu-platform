@@ -516,4 +516,51 @@ you send a form that contains :
 ]
 ```
 
-### 2.
+### 2. getExams :_GET_ /api/v1/student/exams
+
+- first you fetch Exams by level send this->
+
+```json
+{
+  "level": 1
+}
+```
+
+- Response:
+
+```json
+{
+
+  "exam_id": "156545646",
+  "subject_id": "ghfdjt54hj5g4",
+  "subject_name": "English Language",
+  "title": "Quiz1",
+  "duration": 15,
+  "startAt": date
+
+}
+```
+
+### 3. Take Exam: _GET_ /api/v1/student/take-exam
+
+```json
+{
+  "exam_id": "d21456457hj"
+}
+```
+
+- response with questions
+
+### 4. Payments
+
+#### - get data : _GET_ /api/v1/student/pay
+
+you should request with level:
+
+```json
+{
+  "level": 1
+}
+```
+
+#### - create Payment
