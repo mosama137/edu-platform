@@ -477,12 +477,10 @@ you send a form that contains :
 
 ### 1. getCourses:_GET_ /api/v1/student/courses
 
-- first you fetch courses by level send this->
+- first you fetch courses by level send in query->
 
-```json
-{
-  "level": 1
-}
+```URL
+/api/v1/student/courses?level=1
 ```
 
 - the response is :
@@ -555,12 +553,10 @@ you send a form that contains :
 
 #### - get data : _GET_ /api/v1/student/pay
 
-you should request with level:
+you should request with level based on student in query:
 
-```json
-{
-  "level": 1
-}
+```URL
+/api/v1/student/pay?level=1
 ```
 
 #### - create Payment

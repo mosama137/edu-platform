@@ -1,4 +1,4 @@
-const { Student, Subject, Exam, PaymentLevels } = require('../models')
+const { Student, Subject, Exam, PaymentLevels, PaymentHistory } = require('../models')
 const createError = require('http-errors')
 
 
@@ -7,7 +7,7 @@ const createError = require('http-errors')
 // matches GET /api/v1/student/courses
 const getCourses = async (req, res, next) => {
     try {
-        const { level } = req.body
+        const level = req.query.level
         const courses = await Subject.find({ level: level })
 
         const formattedCourses = courses.map(subject => ({
@@ -27,7 +27,7 @@ const getCourses = async (req, res, next) => {
 // matches GET /api/v1/student/exams
 const getExams = async (req, res, next) => {
     try {
-        const { level } = req.body
+        const level = req.params.level
         const availableExams = await Exam.find({ level: level }).populate({
             path: 'subject_id',
             select: '_id subject_name level'
@@ -50,8 +50,9 @@ const getExams = async (req, res, next) => {
 // matches GET /api/v1/student/take-exam
 const takeExam = async (req, res, next) => {
     try {
-        const { exam_id } = req.body
+        const exam_id = req.params.exam_id
         const questions = await Exam.findById(exam_id).select('questions')
+        res.send(questions)
     } catch (error) {
         next(createError.BadRequest('Failed to fetch Data.'))
     }
@@ -69,18 +70,13 @@ const getResults = async (req, res, next) => {
 // matches GET /api/v1/student/pay
 const getPay = async (req, res, next) => {
     try {
-        const { level } = req.body
+        const level = req.query.level
         const getLevelAmount = await PaymentLevels.find({ level: level }).lean()
         const getMethods = await PaymentMethods.find({}).lean()
-        const Methods = getMethods.map(method => ({
-            id: method._id,
-            name: method.name,
-            account: method.account
-        }))
 
         return res.send({
-            Methods,
-            getLevelAmount
+            getLevelAmount,
+            getMethods
         })
     } catch (error) {
         next(createError.BadRequest('Failed to fetch Data.'))
@@ -90,6 +86,19 @@ const getPay = async (req, res, next) => {
 // matches POST /api/v1/student/pay
 const createPay = async (req, res, next) => {
     try {
+        const { user_id, level, payment_method, paid_from, paid_to } = req.body
+        const payment = await PaymentHistory.create({
+            user_id: user_id,
+            level: level,
+            payment_method: payment_method,
+            paid_from: paid_from,
+            paid_to: paid_to
+        }).lean()
+        res.send({
+            status: 201,
+            msg: "created!",
+            res: payment
+        })
         // 
     } catch (error) {
         next(createError.BadRequest('Failed to fetch Data.'))
