@@ -366,16 +366,13 @@ _DELETE_ /api/v1/admin/course
 ## Courses Page:
 
 ### 1. getCourses: _GET_ /api/v1/teacher/Courses
+- first you fetch courses by user_id send in query->
 
-request by
-
-```JSON
-{
-  "user_id":"6656236078acea5444e2ee2a"
-}
+```URL
+/api/v1/student/courses?user_id=1f541534gfhf
 ```
 
-response:
+- response:
 
 ```JSON
 [
@@ -427,8 +424,12 @@ you send a form that contains :
 ## Exam Page:
 
 ### 1. getExams : _GET_ /api/v1/teacher/exam
-
 - pass the user_id of teacher to fetch the exams:
+
+```URL
+/api/v1/student/courses?user_id=1hjk45h52j4k
+```
+
 
 ```JSON
 {
