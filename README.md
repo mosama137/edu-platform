@@ -444,6 +444,7 @@ you send a form that contains :
 ```JSON
 {
   "teacher_id": "352d434g1dfgdf",
+  "level":1,
   "subject_id": "dgh54f5ghfg54h5f4gh",
   "title": "Sample Exam",
   "startAt": "2024-06-10T09:00:00Z",

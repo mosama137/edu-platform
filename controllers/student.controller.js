@@ -27,7 +27,7 @@ const getCourses = async (req, res, next) => {
 // matches GET /api/v1/student/exams
 const getExams = async (req, res, next) => {
     try {
-        const level = req.params.level
+        const level = req.query.level
         const availableExams = await Exam.find({ level: level }).populate({
             path: 'subject_id',
             select: '_id subject_name level'

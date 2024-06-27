@@ -7,7 +7,7 @@ const createError = require('http-errors')
 // matches GET /api/v1/teacher/Courses
 const getCourses = async (req, res, next) => {
     try {
-        const user_id = req.params.user_id
+        const user_id = req.query.user_id
         const teacher = await Teacher.findById(user_id).populate({
             path: 'subjects',
             select: '_id subject_name level content'
@@ -66,7 +66,7 @@ const delContent = async (req, res, next) => {
 // matches GET /api/v1/teacher/exam
 const getExams = async (req, res, next) => {
     try {
-        const user_id = req.params.user_id
+        const user_id = req.query.user_id
         const exams = await Exam.find({ teacher_id: user_id })
         res.send(exams)
     } catch (error) {
@@ -77,10 +77,11 @@ const getExams = async (req, res, next) => {
 // matches POST /api/v1/teacher/exam
 const uploadExam = async (req, res, next) => {
     try {
-        const { teacher_id, subject_id, title, startAt, duration, questions } = req.body
+        const { teacher_id, level, subject_id, title, startAt, duration, questions } = req.body
         const createdExam = await Exam.create({
             teacher_id: teacher_id,
             subject_id: subject_id,
+            level: level,
             title: title,
             startAt: startAt,
             duration: duration,
