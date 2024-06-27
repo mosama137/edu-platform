@@ -61,7 +61,9 @@ const takeExam = async (req, res, next) => {
 // matches GET /api/v1/student/results
 const getResults = async (req, res, next) => {
     try {
-        // 
+        const student_id = req.query.student_id
+        const results = await ExamResult.find({ student_id: student_id })
+        res.send(results)
     } catch (error) {
         next(createError.BadRequest('Failed to fetch Data.'))
     }

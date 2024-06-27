@@ -556,6 +556,14 @@ you send a form that contains :
 }
 ```
 
+### 5. getResults:_GET_ /api/v1/student/results
+- first you fetch Results by student_id send in query->
+
+```URL
+/api/v1/student/courses?student_id=1h345356gh
+```
+
+
 ### 4. Payments
 
 #### - get data : _GET_ /api/v1/student/pay
@@ -567,3 +575,15 @@ you should request with level based on student in query:
 ```
 
 #### - create Payment
+- pass these data to create a payment
+
+```json
+  {
+    "user_id":"g54g45tg43y",
+    "level":1,
+    "payment_method": "instaPay",
+    "paid_from":"mosama137",
+    "paid_to": "mohassan12"
+  }
+
+```
