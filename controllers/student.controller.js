@@ -1,4 +1,4 @@
-const { Student, Subject, Exam, PaymentLevels, PaymentHistory } = require('../models')
+const { Student, Subject, Exam, PaymentLevels, PaymentHistory, ExamResult } = require('../models')
 const createError = require('http-errors')
 
 
@@ -50,7 +50,7 @@ const getExams = async (req, res, next) => {
 // matches GET /api/v1/student/take-exam
 const takeExam = async (req, res, next) => {
     try {
-        const exam_id = req.params.exam_id
+        const exam_id = req.query.exam_id
         const questions = await Exam.findById(exam_id).select('questions')
         res.send(questions)
     } catch (error) {
@@ -62,6 +62,20 @@ const takeExam = async (req, res, next) => {
 const getResults = async (req, res, next) => {
     try {
         // 
+    } catch (error) {
+        next(createError.BadRequest('Failed to fetch Data.'))
+    }
+}
+const addResult = async (req, res, next) => {
+    try {
+        const { student_id, subject_id, exam_id, score } = req.body
+        const createResult = await ExamResult.create({
+            student_id: student_id,
+            subject_id: subject_id,
+            exam_id: exam_id,
+            score: score
+        }).lean()
+        res.send(createResult)
     } catch (error) {
         next(createError.BadRequest('Failed to fetch Data.'))
     }
@@ -108,8 +122,9 @@ const createPay = async (req, res, next) => {
 module.exports = {
     getCourses,
     getExams,
-    getResults,
     takeExam,
+    addResult,
+    getResults,
     getPay,
     createPay
 

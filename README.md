@@ -518,12 +518,10 @@ you send a form that contains :
 
 ### 2. getExams :_GET_ /api/v1/student/exams
 
-- first you fetch Exams by level send this->
+- pass the level of student to fetch the exams:
 
-```json
-{
-  "level": 1
-}
+```URL
+/api/v1/student/courses?level=1
 ```
 
 - Response:
@@ -542,14 +540,21 @@ you send a form that contains :
 ```
 
 ### 3. Take Exam: _GET_ /api/v1/student/take-exam
+- first you fetch exam by exam_id send in query->
 
-```json
-{
-  "exam_id": "d21456457hj"
-}
+```URL
+/api/v1/student/courses?exam_id=d21456457hj
 ```
 
-- response with questions
+### 4. Take result after exam: _GET_ /api/v1/student/exam-result
+```json
+{
+  "student_id": "352d434g1dfgdf",
+  "exam_id": "352d434g1dfgdf",
+  "subject_id": "dgh54f5ghfg54h5f4gh",
+  "score": 90,
+}
+```
 
 ### 4. Payments
 

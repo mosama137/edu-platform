@@ -9,6 +9,7 @@ studentRouter.get('/exams', studentController.getExams)
 
 // matches GET /api/v1/student/take-exam
 studentRouter.get('/take-exam', studentController.takeExam)
+studentRouter.post('/exam-result', studentController.addResult)
 
 // matches GET /api/v1/student/results
 studentRouter.get('/results', studentController.getResults)

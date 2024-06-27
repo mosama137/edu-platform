@@ -3,8 +3,9 @@ const Schema = mongoose.Schema
 
 // Define Exam Result Schema
 const examResultSchema = new mongoose.Schema({
-    exam: { type: mongoose.Schema.Types.ObjectId, ref: 'Exam' },
-    student: { type: mongoose.Schema.Types.ObjectId, ref: 'Student' },
+    subject_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Subject' },
+    exam_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Exam' },
+    student_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Student' },
     score: Number,
     // Other exam result fields
 });
