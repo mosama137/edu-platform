@@ -1,29 +1,33 @@
-# welcome to Edu Platform 👋
+# Welcome to Edu Platform 👋
 
-## auth routes
+![App Picture](public\images\img1.png) <!-- Place your app picture here -->
 
-### 1. _register_ :
+## API Documentation
 
-you should give me data as below in json format
+### Authentication
 
-#### for STUDENT
+#### Register
 
-#### _POST_ /api/v1/auth/register
+Provide the following data in JSON format:
 
-```JSON
- {
- "full_name": "mohamed osama",
- "national_id": "30203131500559",
- "role":"student",
- "phone":"01065623680",
- "password":"12345678",
- "level":1
- }
+##### For Student
+
+**_POST_** `/api/v1/auth/register`
+
+```json
+{
+  "full_name": "Mohamed Osama",
+  "national_id": "30203131500559",
+  "role": "student",
+  "phone": "01065623680",
+  "password": "12345678",
+  "level": 1
+}
 ```
 
 #### for TEACHER
 
-#### _POST_ /api/v1/auth/register
+**_POST_** `/api/v1/auth/register`
 
 ```JSON
  {
@@ -34,23 +38,24 @@ you should give me data as below in json format
  "password":"12345678"
  }
 ```
+---
 
 ### 2. _Login_ :
 
 the request should be json format
 
-#### _POST_ /api/v1/auth/login
+**_POST_** `/api/v1/auth/login`
 
 ```JSON
 {
-"username": "30203131500", // national id
-"password":"12345678"
+  "username": "30203131500", // National ID
+  "password": "12345678"
 }
 ```
-
+---
 #### _Login response_:
 
-#### 1. if Student :
+##### 1. if Student :
 
 ```JSON
   {
@@ -66,7 +71,7 @@ the request should be json format
 }
 ```
 
-#### 2. if teacher:
+##### 2. if teacher:
 
 ```Json
 {
@@ -81,7 +86,7 @@ the request should be json format
 }
 ```
 
-#### 3. if Admin:
+##### 3. if Admin:
 
 ```Json
 {
@@ -96,26 +101,34 @@ the request should be json format
 }
 ```
 
-## _you can navigate to admin, teacher or student pages based on role provided in response_
 
-## _First role admin_
+---
+## Navigation
 
-## Member Page:
+You can navigate to admin, teacher, or student pages based on the role provided in the response.
 
-### 1. Get Students: _GET_ /api/v1/admin/students
+---
 
-```Json
+### 1.Admin Role
+
+#### **1.1** Member Page
+
+##### 1. Get Students
+
+**_GET_** `/api/v1/admin/students`
+
+```json
 [
   {
     "student_id": "66d15d26b39e7",
-    "full_name": "mohamed osama",
+    "full_name": "Mohamed Osama",
     "national_id": "30203131500",
     "isActive": true,
     "level": 1
   },
   {
     "_id": "663a8bb04b15ad139ea",
-    "full_name": "amr osama",
+    "full_name": "Amr Osama",
     "national_id": "30203131500",
     "isActive": true,
     "level": 2
@@ -123,7 +136,8 @@ the request should be json format
 ]
 ```
 
-### 2. Get Teachers: _GET_ /api/v1/admin/teachers
+### 2. Get Teachers:
+**_GET_** `/api/v1/admin/teachers`
 
 ```JSON
 [
@@ -154,7 +168,7 @@ the request should be json format
 
 ### Modify Activation Accounts:
 
-#### _POST_ /api/v1/admin/activation
+**_POST_** `/api/v1/admin/activation`
 
 ```JSON
 {
@@ -165,7 +179,7 @@ the request should be json format
 
 ### Delete User:
 
-#### _DELETE_ /api/v1/admin/user
+**_DELETE_** `/api/v1/admin/user`
 
 ```Json
 {
@@ -175,9 +189,9 @@ the request should be json format
 
 ---
 
-## Courses Page
+### **1.2** Courses Page
 
-#### 1. _GET_ /api/v1/admin/courses
+1.2.1 **_GET_** `/api/v1/admin/courses`
 
 ```JSON
 [
@@ -198,9 +212,9 @@ the request should be json format
 ]
 ```
 
-#### 2. Subjects control : Add or Update Course
+1.2.2 Subjects control : Add or Update Course
 
-1.  Adding _POST_ /api/v1/admin/course
+Adding: **_POST_** `/api/v1/admin/course`
 
 ```JSON
 {
@@ -215,10 +229,9 @@ or
 }
 ```
 
-2.  update subject's teacher: _POST_ /api/v1/admin/course
+update subject's teacher: **_POST_** `/api/v1/admin/course`
 
 ```Json
-adding teacher
 {
   "subject_name": "Computer Fundamentals",
   "teacher_id":"663096ccea3e112a0411f6e5",
@@ -238,7 +251,7 @@ or remove teacher by not sending teacher in json
 
 #### 3. Delete Course:
 
-_DELETE_ /api/v1/admin/course
+**_DELETE_** `/api/v1/admin/course`
 
 ```Json
 {
