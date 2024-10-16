@@ -249,7 +249,7 @@ or remove teacher by not sending teacher in json
 }
 ```
 
-#### 3. Delete Course:
+1.2.3 Delete Course:
 
 **_DELETE_** `/api/v1/admin/course`
 
@@ -263,7 +263,8 @@ or remove teacher by not sending teacher in json
 
 ## Payment Page:
 
-### 1. payment Levels information : _GET_ /api/v1/admin/pay/level
+1.1 payment Levels information : 
+**_GET_** `/api/v1/admin/pay/level`
 
 ```Json
 [
@@ -290,7 +291,8 @@ or remove teacher by not sending teacher in json
 ]
 ```
 
-### 2. Add or edit payment level: _POST_ /api/v1/admin/pay/level
+1.2 Add or edit payment level: 
+**_POST_** `/api/v1/admin/pay/level`
 
 ```JSON
 {
@@ -299,7 +301,8 @@ or remove teacher by not sending teacher in json
 }
 ```
 
-### 3. Delete payment level: _DELETE_ /api/v1/admin/pay/level
+1.3 Delete payment level: 
+**_DELETE_** `/api/v1/admin/pay/level`
 
 ```Json
 {
@@ -307,7 +310,7 @@ or remove teacher by not sending teacher in json
 }
 ```
 
-### 4. payment Methods information : _GET_ /api/v1/admin/pay/method
+1.4 payment Methods information :**_GET_** `/api/v1/admin/pay/method`
 
 ```Json
 [
@@ -324,7 +327,8 @@ or remove teacher by not sending teacher in json
 ]
 ```
 
-### 5. Add or edit payment Method: _POST_ /api/v1/admin/pay/method
+1.5 Add or edit payment Method: 
+**_POST_** `/api/v1/admin/pay/method`
 
 ```JSON
 {
@@ -333,7 +337,8 @@ or remove teacher by not sending teacher in json
 }
 ```
 
-### 6. Delete payment Method: _DELETE_ /api/v1/admin/pay/method
+1.6 Delete payment Method: 
+**_DELETE_** `/api/v1/admin/pay/method`
 
 ```Json
 {
@@ -341,7 +346,8 @@ or remove teacher by not sending teacher in json
 }
 ```
 
-### 7. Get Payment History: _GET_ /api/v1/admin/pay/history
+1.7 Get Payment History: 
+**_GET_** `/api/v1/admin/pay/history`
 
 ```Json
 [
@@ -366,19 +372,21 @@ or remove teacher by not sending teacher in json
 ]
 ```
 
-### 8. Submit Payment Request: _POST_ /api/v1/admin/pay/history
+1.8 Submit Payment Request: 
+**_POST_** `/api/v1/admin/pay/history`
 
 ```JSON
 {
   "user_id":"66585bd8a8fb5080bd8c3313"
 }
 ```
-
+---
 ## _Second role teacher_
 
-## Courses Page:
+### 1. Courses Page:
 
-### 1. getCourses: _GET_ /api/v1/teacher/Courses
+1.1 Get Courses: 
+**_GET_** `/api/v1/teacher/Courses`
 - first you fetch courses by user_id send in query->
 
 ```URL
@@ -416,7 +424,8 @@ or remove teacher by not sending teacher in json
 ]
 ```
 
-### 2. uploadContent: _POST_ /api/v1/teacher/content
+1.2 uploadContent: 
+**_POST_** `/api/v1/teacher/content`
 
 you send a form that contains :
 
@@ -425,7 +434,8 @@ you send a form that contains :
 - file: you should set in form :
   `<input type="file" id="pdf" name="pdf" accept=".pdf"> `
 
-### 3. delContent: _DELETE_ /api/v1/teacher/content
+1.3 delContent: 
+**_DELETE_** `/api/v1/teacher/content`
 
 ```JSON
 {
@@ -434,23 +444,25 @@ you send a form that contains :
 }
 ```
 
-## Exam Page:
+### 2 Exam Page:
 
-### 1. getExams : _GET_ /api/v1/teacher/exam
+2.1 getExams :
+**_GET_** `/api/v1/teacher/exam`
 - pass the user_id of teacher to fetch the exams:
 
 ```URL
 /api/v1/student/courses?user_id=1hjk45h52j4k
 ```
 
-
+<!-- 
 ```JSON
 {
   "user_id": "54d5fg4dsg45df4g"
 }
-```
+``` -->
 
-### 2. uploadExam: _POST_ /api/v1/teacher/exam
+2.2 uploadExam: 
+**_POST_** `/api/v1/teacher/exam`
 
 - pass these data to create :
 
@@ -478,7 +490,8 @@ you send a form that contains :
 
 ```
 
-### 3. delExam: _DELETE_ /api/v1/teacher/exam
+2.3 delExam: 
+**_DELETE_** `/api/v1/teacher/exam`
 
 - pass the exam_id:
 
@@ -487,10 +500,11 @@ you send a form that contains :
   "exam_id":"ghfdjt54hj5g4"
 }
 ```
-
+---
 ## _Student Role_
 
-### 1. getCourses:_GET_ /api/v1/student/courses
+1.1 getCourses:
+**_GET_** `/api/v1/student/courses`
 
 - first you fetch courses by level send in query->
 
@@ -529,7 +543,8 @@ you send a form that contains :
 ]
 ```
 
-### 2. getExams :_GET_ /api/v1/student/exams
+1.2 getExams :
+**_GET_** `/api/v1/student/exams`
 
 - pass the level of student to fetch the exams:
 
@@ -552,14 +567,16 @@ you send a form that contains :
 }
 ```
 
-### 3. Take Exam: _GET_ /api/v1/student/take-exam
+1.3 Take Exam: 
+**_GET_** `/api/v1/student/take-exam`
 - first you fetch exam by exam_id send in query->
 
 ```URL
 /api/v1/student/courses?exam_id=d21456457hj
 ```
 
-### 4. Take result after exam: _GET_ /api/v1/student/exam-result
+1.4 Take result after exam: 
+**_GET_** `/api/v1/student/exam-result`
 ```json
 {
   "student_id": "352d434g1dfgdf",
@@ -569,7 +586,8 @@ you send a form that contains :
 }
 ```
 
-### 5. getResults:_GET_ /api/v1/student/results
+1.5 getResults:
+**_GET_** `/api/v1/student/results`
 - first you fetch Results by student_id send in query->
 
 ```URL
@@ -577,9 +595,8 @@ you send a form that contains :
 ```
 
 
-### 4. Payments
-
-#### - get data : _GET_ /api/v1/student/pay
+1.6 Payments
+**_GET_** `/api/v1/student/pay`
 
 you should request with level based on student in query:
 
@@ -587,7 +604,7 @@ you should request with level based on student in query:
 /api/v1/student/pay?level=1
 ```
 
-#### - create Payment
+1.7 create Payment
 - pass these data to create a payment
 
 ```json
@@ -596,7 +613,7 @@ you should request with level based on student in query:
     "level":1,
     "payment_method": "instaPay",
     "paid_from":"mosama137",
-    "paid_to": "mohassan12"
+    "paid_to": "mohassan12",
+    "screenshot":"/path/to/screenshot.png"
   }
-
 ```
