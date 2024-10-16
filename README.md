@@ -1,6 +1,6 @@
 # Welcome to Edu Platform 👋
 
-![App Picture](public\images\img1.png) <!-- Place your app picture here -->
+![App Picture](/public/images/img1.png) <!-- Place your app picture here -->
 
 ## API Documentation
 
